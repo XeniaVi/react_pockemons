@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { Box, Card as MuiCard } from "@mui/material";
+import {
+  Accordion,
+  AccordionSummary,
+  Box,
+  Card as MuiCard,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const Container = styled(Box)`
@@ -68,5 +73,29 @@ export const StatsItem = styled.li`
 
 export const StatsItemNumber = styled.span`
   color: ${(props) => props.color};
+  font-weight: 700;
+`;
+
+export const DetailedTypePokemon = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+  color: #08212c;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-color: ${(props) => props.bgcolor};
+`;
+
+export const FlexInnerDetailedInfo = styled(FlexContainer)`
+  padding: 1rem 0;
+`;
+
+export const CustomAccordion = styled(Accordion)`
+  width: 100%;
+`;
+
+export const CustomAccordionSummary = styled(AccordionSummary)`
   font-weight: 700;
 `;
