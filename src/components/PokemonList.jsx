@@ -7,7 +7,7 @@ export const PokemonList = ({ items }) => {
   return (
     <List>
       {items.map((item) => (
-        <CustomLink key={item.id} to={`/pokemon/${item.id}`}>
+        <CustomLink key={item.name} to={`/pokemon/${item.name}`}>
           <PokemonCard item={item} />
         </CustomLink>
       ))}
