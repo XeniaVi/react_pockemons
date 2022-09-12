@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Box, Card as MuiCard } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const Container = styled(Box)`
   width: 100%;
@@ -7,6 +8,10 @@ export const Container = styled(Box)`
   padding: 2rem;
   background-color: #cce1eb;
   box-sizing: border-box;
+`;
+
+export const CustomLink = styled(Link)`
+  text-decoration: none;
 `;
 
 export const FlexContainer = styled(Box)`
