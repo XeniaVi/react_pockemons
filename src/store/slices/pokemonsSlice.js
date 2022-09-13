@@ -9,6 +9,9 @@ const pokemonsSlice = createSlice({
     count: 0,
     previous: null,
     next: null,
+    limit: 10,
+    offset: 0,
+    countOfPages: null,
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
@@ -18,6 +21,7 @@ const pokemonsSlice = createSlice({
         count: action.payload.count,
         previous: action.payload.previous,
         next: action.payload.next,
+        countOfPages: Math.ceil(action.payload.count / state.limit),
       };
     });
     builder.addCase(actionGetDetailedInfo.fulfilled, (state, action) => {

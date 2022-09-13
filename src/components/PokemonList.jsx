@@ -1,15 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { List } from "../styles/component";
+import { FlexContainer, List } from "../styles/component";
 import { PokemonCard } from "./PokemonCard";
+import { Pagination } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export const PokemonList = ({ items }) => {
+  const countOfPages = useSelector((state) => state.pokemons.countOfPages);
   return (
-    <List>
-      {items.map((item) => (
-        <PokemonCard key={item.name} item={item} />
-      ))}
-    </List>
+    <>
+      <FlexContainer>
+        <Pagination count={countOfPages} />
+      </FlexContainer>
+      <List>
+        {items.map((item) => (
+          <PokemonCard key={item.name} item={item} />
+        ))}
+      </List>
+    </>
   );
 };
 
