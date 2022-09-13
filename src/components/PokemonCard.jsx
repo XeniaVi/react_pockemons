@@ -27,30 +27,23 @@ export const PokemonCard = ({ item }) => {
       setCurrentItem(items.filter((i) => i.name === item.name)[0]);
   }, [items]);
 
-  return (
-    <>
-      {currentItem ? (
-        <CustomLink to={`/pokemon/${currentItem.id}`}>
-          <Card bgcolor={colors[currentItem.types[0].type.name]}>
-            <Typography
-              component="h5"
-              variant="h5"
-              sx={{ borderBottom: "3px solid #46748E" }}
-            >
-              {currentItem.name.toUpperCase()}
-            </Typography>
-            <CardImage
-              src={currentItem.sprites.other.home.front_default}
-              alt=""
-            />
-          </Card>
-        </CustomLink>
-      ) : (
-        <CircleProgressContainer>
-          <CircularProgress />
-        </CircleProgressContainer>
-      )}
-    </>
+  return currentItem ? (
+    <CustomLink to={`/pokemon/${currentItem.id}`}>
+      <Card bgcolor={colors[currentItem.types[0].type.name]}>
+        <Typography
+          component="h5"
+          variant="h5"
+          sx={{ borderBottom: "3px solid #46748E" }}
+        >
+          {currentItem.name.toUpperCase()}
+        </Typography>
+        <CardImage src={currentItem.sprites.other.home.front_default} alt="" />
+      </Card>
+    </CustomLink>
+  ) : (
+    <CircleProgressContainer>
+      <CircularProgress />
+    </CircleProgressContainer>
   );
 };
 

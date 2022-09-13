@@ -12,7 +12,5 @@ export const Main = () => {
     dispatch(actionGetPokemons({ endpoint: "pokemon", limit: 20, offset: 0 }));
   }, []);
 
-  return (
-    <>{items.length ? <PokemonList items={items} /> : <CircularProgress />}</>
-  );
+  return items.length ? <PokemonList items={items} /> : <CircularProgress />;
 };

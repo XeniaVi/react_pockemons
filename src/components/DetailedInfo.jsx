@@ -61,7 +61,7 @@ export const DetailedInfo = () => {
             <FlexInnerDetailedInfo>
               <FlexContainer>
                 <Typography variant="h4" component="h4">
-                  Height:{" "}
+                  Height:
                 </Typography>
                 <StatsItemNumber
                   fs="2rem"
@@ -73,7 +73,7 @@ export const DetailedInfo = () => {
 
               <FlexContainer>
                 <Typography variant="h4" component="h4">
-                  Weight:{" "}
+                  Weight:
                 </Typography>
                 <StatsItemNumber
                   fs="2rem"
@@ -124,7 +124,7 @@ export const DetailedInfo = () => {
         </DetailedContainer>
       ) : (
         <CircularProgress />
-      )}{" "}
+      )}
     </>
   );
 };
