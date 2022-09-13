@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetPokemons } from "../store/asyncActions";
@@ -12,8 +13,6 @@ export const Main = () => {
   }, []);
 
   return (
-    <>
-      {items.length ? <PokemonList items={items} /> : <span>Loading...</span>}
-    </>
+    <>{items.length ? <PokemonList items={items} /> : <CircularProgress />}</>
   );
 };

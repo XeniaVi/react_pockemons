@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Typography } from "@mui/material";
-import { Card, CardImage, CustomLink } from "../styles/component";
+import { Typography, CircularProgress } from "@mui/material";
+import {
+  Card,
+  CardImage,
+  CircleProgressContainer,
+  CustomLink,
+} from "../styles/component";
 import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
@@ -41,7 +46,9 @@ export const PokemonCard = ({ item }) => {
           </Card>
         </CustomLink>
       ) : (
-        <span>Loadfing</span>
+        <CircleProgressContainer>
+          <CircularProgress />
+        </CircleProgressContainer>
       )}
     </>
   );

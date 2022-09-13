@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colors } from "../constants";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import {
   DetailedContainer,
   TypePokemon,
@@ -123,7 +123,7 @@ export const DetailedInfo = () => {
           </FlexInnerCard>
         </DetailedContainer>
       ) : (
-        <span>Loading</span>
+        <CircularProgress />
       )}{" "}
     </>
   );
