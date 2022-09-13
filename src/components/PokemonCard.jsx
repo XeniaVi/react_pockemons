@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
@@ -28,7 +27,7 @@ export const PokemonCard = ({ item }) => {
       {currentItem ? (
         <CustomLink to={`/pokemon/${currentItem.id}`}>
           <Card bgcolor={colors[currentItem.types[0].type.name]}>
-            <Typography 
+            <Typography
               component="h5"
               variant="h5"
               sx={{ borderBottom: "3px solid #46748E" }}

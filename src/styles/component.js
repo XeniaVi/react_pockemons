@@ -83,8 +83,19 @@ export const Typography = styled(MuiTypography)`
 `;
 
 export const CustomLink = styled(Link)`
-  width: 45%;
+  width: 49%;
   text-decoration: none;
+  transition: all 0.5s ease-in-out;
+
+  &:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+    transition: all 0.5s ease-in-out;
+  }
+
+  @media (max-width: 910px) {
+    width: 48%;
+  }
 
   @media (max-width: 768px) {
     width: 100%;
@@ -96,6 +107,7 @@ export const List = styled.ul`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  gap: 1rem;
   list-style: none;
 
   @media (max-width: 768px) {
