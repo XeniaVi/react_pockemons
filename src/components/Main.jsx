@@ -13,7 +13,7 @@ export const Main = () => {
 
   useEffect(() => {
     dispatch(actionGetPokemons({ endpoint: "pokemon", limit, offset }));
-  }, []);
+  }, [limit]);
 
   return items.length ? <PokemonList items={items} /> : <CircularProgress />;
 };

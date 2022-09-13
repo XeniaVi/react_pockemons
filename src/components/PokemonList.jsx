@@ -4,6 +4,7 @@ import { FlexContainer, List } from "../styles/component";
 import { PokemonCard } from "./PokemonCard";
 import { Pagination } from "@mui/material";
 import { useSelector } from "react-redux";
+import { SelectForm } from "./SelectForm";
 
 export const PokemonList = ({ items }) => {
   const countOfPages = useSelector((state) => state.pokemons.countOfPages);
@@ -11,6 +12,7 @@ export const PokemonList = ({ items }) => {
     <>
       <FlexContainer>
         <Pagination count={countOfPages} />
+        <SelectForm />
       </FlexContainer>
       <List>
         {items.map((item) => (

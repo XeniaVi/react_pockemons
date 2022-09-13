@@ -13,6 +13,14 @@ const pokemonsSlice = createSlice({
     offset: 0,
     countOfPages: null,
   },
+  reducers: {
+    setLimit: (state, action) => {
+      return {
+        ...state,
+        limit: action.payload,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
       return {
@@ -32,5 +40,7 @@ const pokemonsSlice = createSlice({
     });
   },
 });
+
+export const { setLimit } = pokemonsSlice.actions;
 
 export default pokemonsSlice.reducer;
