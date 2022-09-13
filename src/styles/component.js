@@ -43,6 +43,7 @@ export const FlexInnerDetailedInfo = styled(FlexContainer)`
 `;
 
 export const DetailedContainer = styled(Box)`
+  position: relative;
   border: 1px solid #46748e;
   padding: 2rem;
   margin-top: 1.5rem;
