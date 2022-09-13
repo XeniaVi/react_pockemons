@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
-import { Card, CardImage } from "../styles/component";
+import { Card, CardImage, CustomLink } from "../styles/component";
 import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
@@ -26,19 +26,21 @@ export const PokemonCard = ({ item }) => {
   return (
     <>
       {currentItem ? (
-        <Card bgcolor={colors[currentItem.types[0].type.name]}>
-          <Typography
-            component="h5"
-            variant="h5"
-            sx={{ borderBottom: "3px solid #46748E" }}
-          >
-            {currentItem.name.toUpperCase()}
-          </Typography>
-          <CardImage
-            src={currentItem.sprites.other.home.front_default}
-            alt=""
-          />
-        </Card>
+        <CustomLink to={`/pokemon/${currentItem.id}`}>
+          <Card bgcolor={colors[currentItem.types[0].type.name]}>
+            <Typography 
+              component="h5"
+              variant="h5"
+              sx={{ borderBottom: "3px solid #46748E" }}
+            >
+              {currentItem.name.toUpperCase()}
+            </Typography>
+            <CardImage
+              src={currentItem.sprites.other.home.front_default}
+              alt=""
+            />
+          </Card>
+        </CustomLink>
       ) : (
         <span>Loadfing</span>
       )}
