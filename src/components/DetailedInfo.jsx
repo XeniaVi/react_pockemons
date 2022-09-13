@@ -1,17 +1,19 @@
-import { AccordionDetails, Typography } from "@mui/material";
 import React from "react";
 import { colors, mockData } from "../constants";
+import { Typography } from "@mui/material";
 import {
-  CustomAccordion,
-  CustomAccordionSummary,
-  DetailedTypePokemon,
+  DetailedContainer,
+  TypePokemon,
+  FlexContainer,
   FlexInnerCard,
   FlexInnerDetailedInfo,
+  SmallImage,
   StatsItem,
   StatsItemNumber,
+  StatsItemText,
   StatsList,
+  ImageContainer,
 } from "../styles/component";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export const DetailedInfo = () => {
   const item = mockData[1];
@@ -23,55 +25,77 @@ export const DetailedInfo = () => {
       : "#A60000";
 
   return (
-    <div
-      style={{
-        border: "1px solid #46748e",
-        padding: "1rem",
-        marginTop: "1.5rem",
-      }}
-    >
-      <Typography variant="h3" component="h2">
-        {item.name.toUpperCase()}
-      </Typography>
-      <FlexInnerDetailedInfo>
-        {item.types.map((item) => (
-          <DetailedTypePokemon
-            key={item.type.name}
-            bgcolor={colors[item.type.name]}
-          >
-            {item.type.name}
-          </DetailedTypePokemon>
-        ))}
-      </FlexInnerDetailedInfo>
-      <span>Height: {item.height}</span>
-      <span>Weight: {item.weight}</span>
-      <FlexInnerDetailedInfo>
-        <CustomAccordion>
-          <CustomAccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <DetailedContainer>
+      <FlexContainer justifyContent="space-around">
+        <FlexInnerDetailedInfo>
+          <Typography variant="h3" component="h2">
+            {item.name.toUpperCase()}
+          </Typography>
+          <FlexInnerDetailedInfo>
+            {item.types.map((item) => (
+              <TypePokemon
+                key={item.type.name}
+                bgcolor={colors[item.type.name]}
+              >
+                {item.type.name}
+              </TypePokemon>
+            ))}
+          </FlexInnerDetailedInfo>
+        </FlexInnerDetailedInfo>
+
+        <FlexInnerDetailedInfo>
+          <FlexContainer>
             <Typography variant="h4" component="h4">
-              Abilities
+              Height:{" "}
             </Typography>
-          </CustomAccordionSummary>
-          <AccordionDetails>
+            <StatsItemNumber fs="2rem" color={colors[item.types[0].type.name]}>
+              {item.height}
+            </StatsItemNumber>
+          </FlexContainer>
+
+          <FlexContainer>
+            <Typography variant="h4" component="h4">
+              Weight:{" "}
+            </Typography>
+            <StatsItemNumber fs="2rem" color={colors[item.types[0].type.name]}>
+              {item.weight}
+            </StatsItemNumber>
+          </FlexContainer>
+
+          <FlexContainer>
+            <Typography variant="h4" component="h4">
+              Abilities:
+            </Typography>
+
             <StatsList>
               {item.abilities.map((item) => (
-                <Typography key={item.name}>{item.ability.name}</Typography>
+                <StatsItem key={item.ability.name}>
+                  <StatsItemText>{item.ability.name}</StatsItemText>
+                </StatsItem>
               ))}
             </StatsList>
-          </AccordionDetails>
-        </CustomAccordion>
-      </FlexInnerDetailedInfo>
+          </FlexContainer>
+        </FlexInnerDetailedInfo>
+
+        <ImageContainer bgcolor={colors[item.types[0].type.name]}>
+          <SmallImage src={item.sprites.other.home.front_default}></SmallImage>
+        </ImageContainer>
+      </FlexContainer>
+
       <FlexInnerCard>
-        Stats:
+        <Typography variant="h4" component="h4">
+          Stats:
+        </Typography>
+
         <StatsList>
           {item.stats.map((item) => (
             <StatsItem key={item.stat.name}>
-              <span>{item.stat.name.toUpperCase()}: </span>
+              <StatsItemText>{item.stat.name}: </StatsItemText>
               <StatsItemNumber color={color}>{item.base_stat}</StatsItemNumber>
             </StatsItem>
           ))}
         </StatsList>
       </FlexInnerCard>
-    </div>
+    </DetailedContainer>
   );
 };
