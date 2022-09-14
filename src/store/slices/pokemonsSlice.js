@@ -16,7 +16,7 @@ const pokemonsSlice = createSlice({
     count: 0,
     limit: 10,
     offset: 0,
-    countOfPages: null,
+    countOfPages: 0,
     currentPage: 1,
   },
   reducers: {

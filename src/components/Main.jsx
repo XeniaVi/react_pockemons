@@ -28,6 +28,7 @@ export const Main = () => {
 
   const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [types, setTypes] = useState([]);
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -47,6 +48,10 @@ export const Main = () => {
     event.target.value
       ? dispatch(setItems(newItems))
       : dispatch(setItems(itemsAll));
+  };
+
+  const handleChangeSelectFilter = (event) => {
+    setTypes(event.target.value);
   };
 
   useEffect(() => {
@@ -75,7 +80,7 @@ export const Main = () => {
         <SelectForm
           handleChange={handleChangeSelect}
           list={limits}
-          limit={limit}
+          value={limit}
           width="230px"
           label="Items to show per page"
           disabled={disabled}
@@ -85,6 +90,15 @@ export const Main = () => {
           value={searchValue}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
+        />
+        <SelectForm
+          handleChange={handleChangeSelectFilter}
+          list={limits}
+          value={types}
+          width="230px"
+          label="Filter by types"
+          disabled={disabled}
+          multiple={true}
         />
       </FlexContainer>
       {itemsDisplay.length ? (

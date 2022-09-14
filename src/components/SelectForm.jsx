@@ -7,17 +7,19 @@ export const SelectForm = ({
   list,
   handleChange,
   width,
-  limit,
+  value,
   disabled,
+  multiple,
 }) => {
   return (
     <FormControl sx={{ width }}>
       <InputLabel>{label}</InputLabel>
       <Select
-        value={limit}
+        value={value}
         label={label}
         onChange={handleChange}
         disabled={disabled}
+        multiple={multiple}
       >
         {list.map((item) => (
           <MenuItem key={item.text} value={item.text}>
@@ -34,6 +36,10 @@ SelectForm.propTypes = {
   list: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
-  limit: PropTypes.number.isRequired,
+  multiple: PropTypes.bool,
+  value: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.array.isRequired,
+  ]),
   disabled: PropTypes.bool.isRequired,
 };
