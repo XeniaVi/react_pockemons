@@ -18,7 +18,7 @@ const pokemonsSlice = createSlice({
         ...state,
         itemsFull: [],
         currentPage: 1,
-        limit: action.payload,
+        limit: Number(action.payload),
         offset: 0,
       };
     },
