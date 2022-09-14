@@ -14,5 +14,5 @@ export const PokemonList = ({ items }) => {
 };
 
 PokemonList.propTypes = {
-  items: PropTypes.array,
+  items: PropTypes.array.isRequired,
 };

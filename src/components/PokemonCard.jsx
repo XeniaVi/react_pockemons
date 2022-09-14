@@ -48,5 +48,5 @@ export const PokemonCard = ({ item }) => {
 };
 
 PokemonCard.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.object.isRequired,
 };
