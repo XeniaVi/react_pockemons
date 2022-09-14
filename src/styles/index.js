@@ -11,3 +11,7 @@ export const stylesBtn = {
     transition: "all 0.5s ease-in-out",
   },
 };
+
+export const stylesCard = {
+  width: "calc(48% - 2rem)",
+};

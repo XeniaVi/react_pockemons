@@ -59,7 +59,6 @@ export const Main = () => {
   }, [limit, offset]);
 
   useEffect(() => {
-    console.log(itemsAll.length, count);
     setDisabled(itemsAll.length !== count);
     next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
