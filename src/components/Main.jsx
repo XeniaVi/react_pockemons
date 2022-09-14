@@ -45,7 +45,7 @@ export const Main = () => {
           label="Items to show per page"
         />
       </FlexContainer>
-      <PokemonList items={items} />{" "}
+      <PokemonList items={items} />
     </>
   ) : (
     <CircularProgress />

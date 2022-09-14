@@ -7,13 +7,11 @@ export const SelectForm = ({ label, list, handleChange, width, limit }) => {
     <FormControl sx={{ width }}>
       <InputLabel>{label}</InputLabel>
       <Select value={limit} label={label} onChange={handleChange}>
-        {list.map((item) => {
-          return (
-            <MenuItem key={item.text} value={item.text}>
-              {item.value}
-            </MenuItem>
-          );
-        })}
+        {list.map((item) => (
+          <MenuItem key={item.text} value={item.text}>
+            {item.value}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
