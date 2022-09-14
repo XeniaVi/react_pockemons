@@ -1,9 +1,16 @@
-import React from "react";
-import { mockData } from "../constants";
+import { CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionGetPokemons } from "../store/asyncActions";
 import { PokemonList } from "./PokemonList";
 
 export const Main = () => {
-  const items = mockData;
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.pokemons.items);
 
-  return <PokemonList items={items} />;
+  useEffect(() => {
+    dispatch(actionGetPokemons({ endpoint: "pokemon", limit: 20, offset: 0 }));
+  }, []);
+
+  return items.length ? <PokemonList items={items} /> : <CircularProgress />;
 };
