@@ -11,7 +11,7 @@ import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
 
-export const PokemonCard = ({ item }) => {
+export const PokemonCard = React.memo(({ item }) => {
   const dispatch = useDispatch();
 
   const items = useSelector((state) => state.pokemons.itemsFull);
@@ -45,7 +45,9 @@ export const PokemonCard = ({ item }) => {
       <CircularProgress />
     </CircleProgressContainer>
   );
-};
+});
+
+PokemonCard.displayName = "PokemonCard";
 
 PokemonCard.propTypes = {
   item: PropTypes.object.isRequired,

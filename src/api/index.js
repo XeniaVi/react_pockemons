@@ -7,6 +7,10 @@ export const getPokemons = async ({ endpoint, limit, offset }) => {
   );
 };
 
+export const getAllPokemons = async (url) => {
+  return await axios.get(url);
+};
+
 export const getDetailedInfo = async (url) => {
   return await axios.get(url);
 };
