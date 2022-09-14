@@ -14,3 +14,7 @@ export const getAllPokemons = async (url) => {
 export const getDetailedInfo = async (url) => {
   return await axios.get(url);
 };
+
+export const getPokemonsAccordingTypes = async (url) => {
+  return await axios.get(url);
+};

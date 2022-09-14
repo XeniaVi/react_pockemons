@@ -19,8 +19,4 @@ export const colors = {
   fairy: "#D685AD",
 };
 
-export const limits = [
-  { value: 10, text: "10" },
-  { value: 20, text: "20" },
-  { value: 50, text: "50" },
-];
+export const limits = [{ name: "10" }, { name: "20" }, { name: "50" }];

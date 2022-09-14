@@ -2,13 +2,19 @@ import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { limits } from "../constants";
-import { actionGetAllPokemons, actionGetPokemons } from "../store/asyncActions";
+import {
+  actionGetAllPokemons,
+  actionGetPokemons,
+  actionGetPokemonsAccordingTypes,
+  actionGetPokemonsType,
+} from "../store/asyncActions";
 import {
   setCurrentPage,
   setItems,
   setItemsDisplay,
   setLimit,
 } from "../store/slices/pokemonsSlice";
+import { setSelectedTypes } from "../store/slices/typesSlice";
 import { FlexContainer } from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
@@ -25,10 +31,12 @@ export const Main = () => {
   const count = useSelector((state) => state.pokemons.count);
   const countOfPages = useSelector((state) => state.pokemons.countOfPages);
   const currentPage = useSelector((state) => state.pokemons.currentPage);
+  const types = useSelector((state) => state.types.types);
+  const itemsTypes = useSelector((state) => state.types.items);
+  const selectedTypes = useSelector((state) => state.types.selectedTypes);
 
   const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const [types, setTypes] = useState([]);
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -51,12 +59,30 @@ export const Main = () => {
   };
 
   const handleChangeSelectFilter = (event) => {
-    setTypes(event.target.value);
+    const newItems = itemsTypes.filter((item) =>
+      item.pokemon.name.includes(event.target.value)
+    );
+
+    const searchType = types.filter((item) => {
+      return item.name === event.target.value[event.target.value.length - 1];
+    })[0];
+
+    !newItems.length &&
+      dispatch(actionGetPokemonsAccordingTypes(searchType.url));
+
+    dispatch(setSelectedTypes(event.target.value));
+  };
+
+  const setItemsByTypes = () => {
+    const newItems = itemsTypes.map((item) => item.pokemon);
+    itemsTypes.length && dispatch(setItems(newItems));
   };
 
   useEffect(() => {
     !itemsAll.length &&
       dispatch(actionGetPokemons({ endpoint: "pokemon", limit, offset }));
+
+    dispatch(actionGetPokemonsType({ endpoint: "type" }));
   }, []);
 
   useEffect(() => {
@@ -67,6 +93,10 @@ export const Main = () => {
     setDisabled(itemsAll.length !== count);
     next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
+
+  useEffect(() => {
+    setItemsByTypes();
+  }, [itemsTypes]);
 
   return (
     <>
@@ -93,8 +123,8 @@ export const Main = () => {
         />
         <SelectForm
           handleChange={handleChangeSelectFilter}
-          list={limits}
-          value={types}
+          list={types}
+          value={selectedTypes}
           width="230px"
           label="Filter by types"
           disabled={disabled}
