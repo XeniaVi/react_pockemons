@@ -7,8 +7,29 @@ const pokemonsSlice = createSlice({
     items: [],
     itemsFull: [],
     count: 0,
-    previous: null,
-    next: null,
+    limit: 10,
+    offset: 0,
+    countOfPages: null,
+    currentPage: 1,
+  },
+  reducers: {
+    setLimit: (state, action) => {
+      return {
+        ...state,
+        itemsFull: [],
+        currentPage: 1,
+        limit: Number(action.payload),
+        offset: 0,
+      };
+    },
+    setCurrentPage: (state, action) => {
+      return {
+        ...state,
+        itemsFull: [],
+        currentPage: action.payload,
+        offset: state.limit * (action.payload - 1),
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
@@ -18,6 +39,7 @@ const pokemonsSlice = createSlice({
         count: action.payload.count,
         previous: action.payload.previous,
         next: action.payload.next,
+        countOfPages: Math.ceil(action.payload.count / state.limit),
       };
     });
     builder.addCase(actionGetDetailedInfo.fulfilled, (state, action) => {
@@ -28,5 +50,7 @@ const pokemonsSlice = createSlice({
     });
   },
 });
+
+export const { setLimit, setCurrentPage } = pokemonsSlice.actions;
 
 export default pokemonsSlice.reducer;

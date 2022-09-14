@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colors } from "../constants";
-import { CircularProgress, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import {
   DetailedContainer,
   TypePokemon,
@@ -14,14 +14,16 @@ import {
   StatsList,
   ImageContainer,
 } from "../styles/component";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { config } from "../config";
 import { actionGetDetailedInfo } from "../store/asyncActions";
 import { getStatsColor } from "../helpers";
+import { stylesBtn } from "../styles";
 
 export const DetailedInfo = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const items = useSelector((state) => state.pokemons.itemsFull);
 
   const [item, setItem] = useState(null);
@@ -41,6 +43,13 @@ export const DetailedInfo = () => {
     <>
       {item ? (
         <DetailedContainer>
+          <Button
+            onClick={() => navigate(-1, { replace: true })}
+            variant="outlined"
+            sx={stylesBtn}
+          >
+            Back
+          </Button>
           <FlexContainer justifyContent="space-around">
             <FlexInnerDetailedInfo>
               <Typography variant="h3" component="h2">
