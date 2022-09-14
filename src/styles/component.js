@@ -107,15 +107,7 @@ export const CircleProgressContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 49%;
-
-  @media (max-width: 910px) {
-    width: 48%;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
+  width: 30%;
 `;
 
 export const List = styled.ul`
