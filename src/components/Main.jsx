@@ -28,7 +28,7 @@ export const Main = () => {
   const next = useSelector((state) => state.pokemons.next);
   const limit = useSelector((state) => state.pokemons.limit);
   const offset = useSelector((state) => state.pokemons.offset);
-  const count = useSelector((state) => state.pokemons.count);
+  // const count = useSelector((state) => state.pokemons.count);
   const countOfPages = useSelector((state) => state.pokemons.countOfPages);
   const currentPage = useSelector((state) => state.pokemons.currentPage);
   const types = useSelector((state) => state.types.types);
@@ -59,22 +59,27 @@ export const Main = () => {
   };
 
   const handleChangeSelectFilter = (event) => {
-    const newItems = itemsTypes.filter((item) =>
-      item.pokemon.name.includes(event.target.value)
-    );
+    const type = event.target.value[event.target.value.length - 1];
 
-    const searchType = types.filter((item) => {
-      return item.name === event.target.value[event.target.value.length - 1];
-    })[0];
+    if (event.target.value.length > selectedTypes.length) {
+      const searchType = types.filter((item) => {
+        return item.name === type;
+      })[0];
 
-    !newItems.length &&
-      dispatch(actionGetPokemonsAccordingTypes(searchType.url));
+      dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
+    } else {
+      console.log(itemsTypes); //TODO: add removing items
+      console.log(1);
+    }
 
     dispatch(setSelectedTypes(event.target.value));
   };
 
   const setItemsByTypes = () => {
-    const newItems = itemsTypes.map((item) => item.pokemon);
+    console.log(itemsTypes);
+
+    const newItems =
+      itemsTypes.length && itemsTypes[itemsTypes.length - 1].items;
     itemsTypes.length && dispatch(setItems(newItems));
   };
 
@@ -90,8 +95,8 @@ export const Main = () => {
   }, [limit, offset]);
 
   useEffect(() => {
-    setDisabled(itemsAll.length !== count);
-    next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
+    setDisabled(itemsAll.length !== 50);
+    next && itemsAll.length < 50 && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
   useEffect(() => {

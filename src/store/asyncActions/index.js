@@ -56,10 +56,11 @@ export const actionGetPokemonsType = createAsyncThunk(
 
 export const actionGetPokemonsAccordingTypes = createAsyncThunk(
   "typesSlice/actionGetPokemonsAccordingTypes",
-  async (url) => {
+  async (obj) => {
     try {
+      const { url, type } = obj;
       const response = await getPokemonsAccordingTypes(url);
-      return response.data;
+      return { data: response.data, type };
     } catch (error) {
       console.log(error);
     }

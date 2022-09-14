@@ -29,9 +29,12 @@ const typesSlice = createSlice({
     builder.addCase(
       actionGetPokemonsAccordingTypes.fulfilled,
       (state, action) => {
+        const { data, type } = action.payload;
+        const newItems = data.pokemon.map((item) => item.pokemon);
+
         return {
           ...state,
-          items: [...state.items, ...action.payload.pokemon],
+          items: [...state.items, { type, items: newItems }],
         };
       }
     );
