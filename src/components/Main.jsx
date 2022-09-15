@@ -113,7 +113,19 @@ export const Main = () => {
     setQuery({ filters: event.target.value });
   };
 
+  const getStartFilterTypes = (filters) => {
+    for (let i = 0; i < filters.length; i++) {
+      const item = types.filter((item) => filters[i] === item.name)[0];
+      dispatch(
+        actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
+      );
+    }
+
+    console.log(offsetState);
+  };
+
   const setItemsByTypes = () => {
+    console.log(itemsTypes);
     if (itemsTypes.length) {
       const newItems = [];
 
@@ -123,7 +135,7 @@ export const Main = () => {
         }
       }
 
-      dispatch(setItems({ data: newItems, offset: 0 }));
+      dispatch(setItems({ data: newItems, offset }));
       dispatch(setItemsAllTypes(newItems));
     }
   };
@@ -138,6 +150,7 @@ export const Main = () => {
       );
 
     dispatch(actionGetPokemonsType({ endpoint: "type" }));
+    filters && dispatch(setSelectedTypes(filters));
   }, []);
 
   useEffect(() => {
@@ -149,10 +162,12 @@ export const Main = () => {
   }, [limitState, offsetState]);
 
   useEffect(() => {
-    setDisabled(itemsAll.length !== 100);
-    setIsLoading(itemsAll.length !== 100);
-    itemsAll.length === 100 && search && getSearchItems(search, offset);
-    next && itemsAll.length < 100 && dispatch(actionGetAllPokemons(next));
+    setDisabled(itemsAll.length !== count);
+    setIsLoading(itemsAll.length !== count);
+    itemsAll.length >= count && search && getSearchItems(search, offset);
+    console.log(filters);
+    itemsAll.length >= count && filters && getStartFilterTypes(filters);
+    next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
   useEffect(() => {
