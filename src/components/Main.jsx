@@ -33,10 +33,18 @@ import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
 import { SelectForm } from "./SelectForm";
 
-const MyFiltersParam = withDefault(ArrayParam, []);
+const FiltersParam = withDefault(ArrayParam, []);
 
 export const Main = () => {
   const dispatch = useDispatch();
+
+  const [query, setQuery] = useQueryParams({
+    limit: NumberParam,
+    offset: NumberParam,
+    search: StringParam,
+    filters: FiltersParam,
+  });
+  const { filters, limit, offset, search } = query;
 
   const {
     itemsDisplay,
@@ -54,16 +62,9 @@ export const Main = () => {
     (state) => state.types
   );
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(search);
   const [disabled, setDisabled] = useState(true);
-
-  const [query, setQuery] = useQueryParams({
-    limit: NumberParam,
-    offset: NumberParam,
-    search: StringParam,
-    filters: MyFiltersParam,
-  });
-  const { filters, limit, offset, search } = query;
+  const [isLoading, setIsLoading] = useState(Boolean(search));
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -73,19 +74,22 @@ export const Main = () => {
     dispatch(setLimit(event.target.value));
   };
 
+  const getSearchItems = (value, offset) => {
+    const newItems = selectedTypes.length
+      ? items.filter((item) => item.name.includes(value))
+      : itemsAll.filter((item) => item.name.includes(value));
+
+    const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
+
+    value
+      ? dispatch(setItems({ data: newItems, offset }))
+      : dispatch(setItems({ data: resetItems, offset }));
+  };
+
   const handleChangeSearchFilter = (event) => {
     setSearchValue(event.target.value);
     setQuery({ search: event.target.value });
-
-    const newItems = types.length
-      ? items.filter((item) => item.name.includes(event.target.value))
-      : itemsAll.filter((item) => item.name.includes(event.target.value));
-
-    const resetItems = types.length ? itemsAllTypes : itemsAll;
-
-    event.target.value
-      ? dispatch(setItems(newItems))
-      : dispatch(setItems(resetItems));
+    getSearchItems(event.target.value, 0);
   };
 
   const handleChangeSelectFilter = (event) => {
@@ -99,7 +103,7 @@ export const Main = () => {
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
     } else if (!type) {
       dispatch(reset());
-      dispatch(setItems(itemsAll));
+      dispatch(setItems({ data: itemsAll, offset: 0 }));
     } else {
       const newItems = itemsTypes.filter((item) => item.type === type);
       dispatch(setItemsTypes(newItems));
@@ -119,7 +123,7 @@ export const Main = () => {
         }
       }
 
-      dispatch(setItems(newItems));
+      dispatch(setItems({ data: newItems, offset: 0 }));
       dispatch(setItemsAllTypes(newItems));
     }
   };
@@ -130,7 +134,6 @@ export const Main = () => {
         actionGetPokemons({
           endpoint: "pokemon",
           limit,
-          offset,
         })
       );
 
@@ -138,7 +141,7 @@ export const Main = () => {
   }, []);
 
   useEffect(() => {
-    if (limitState !== limit || offsetState !== offsetState) {
+    if (limitState !== limit || offsetState !== offset) {
       dispatch(setItemsDisplay({ offsetState, limitState }));
       setQuery({ limit: limitState });
       setQuery({ offset: offsetState });
@@ -147,6 +150,8 @@ export const Main = () => {
 
   useEffect(() => {
     setDisabled(itemsAll.length !== 100);
+    setIsLoading(itemsAll.length !== 100);
+    itemsAll.length === 100 && search && getSearchItems(search, offset);
     next && itemsAll.length < 100 && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
@@ -160,20 +165,20 @@ export const Main = () => {
         <Pagination
           onChange={handleChangePagination}
           page={currentPage}
-          count={countOfPages ? countOfPages : 0}
+          count={countOfPages}
           disabled={disabled}
         />
         <SelectForm
           handleChange={handleChangeSelect}
           list={limits}
-          value={limit}
+          value={limitState}
           width="230px"
           label="Items to show per page"
           disabled={disabled}
         />
         <InputSearch
           label="Search by name"
-          value={searchValue}
+          value={searchValue || ""}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
         />
@@ -187,11 +192,7 @@ export const Main = () => {
           multiple={true}
         />
       </FlexContainer>
-      {itemsDisplay.length ? (
-        <PokemonList items={itemsDisplay} />
-      ) : (
-        <CircularProgress />
-      )}
+      {isLoading ? <CircularProgress /> : <PokemonList items={itemsDisplay} />}
     </>
   );
 };
