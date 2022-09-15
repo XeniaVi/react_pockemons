@@ -82,14 +82,23 @@ export const Main = () => {
   const getSearchItems = (value, offset) => {
     console.log('getSearchItems');
     const newItems = selectedTypes.length
-      ? items.filter((item) => item.name.includes(value))
+      ? itemsAllTypes.filter((item) => item.name.includes(value))
       : itemsAll.filter((item) => item.name.includes(value));
 
     const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
 
+    console.log(items);
+    console.log(itemsAllTypes);
+    console.log(newItems);
+    console.log(selectedTypes);
+    console.log(value);
+    console.log(offset);
+
     value
       ? dispatch(setItems({ data: newItems, offset }))
       : dispatch(setItems({ data: resetItems, offset }));
+      
+    !offset && setQuery({ offset: 0 });
   };
 
   const handleChangeSearchFilter = (event) => {
@@ -116,6 +125,18 @@ export const Main = () => {
     }
 
     dispatch(setSelectedTypes(event.target.value));
+    setQuery({ filters: event.target.value });
+  };
+
+  const getStartFilterTypes = (filters) => {
+    console.log('getStartFilterTypes');
+    for (let i = 0; i < filters.length; i++) {
+      const item = types.filter((item) => filters[i] === item.name)[0];
+      dispatch(
+        actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
+      );
+    }
+    dispatch(setSelectedTypes(filters));
   };
 
   const setItemsByTypes = () => {
@@ -127,6 +148,8 @@ export const Main = () => {
           newItems.push(itemsTypes[i].items[j]);
         }
       }
+
+      console.log(newItems);
 
       dispatch(setItems({ data: newItems, offset }));
       dispatch(setItemsAllTypes(newItems));
@@ -153,13 +176,21 @@ export const Main = () => {
 
   useEffect(() => {
     setDisabled(itemsAll.length !== count);
-    itemsAll.length >= count && search && getSearchItems(search, offset);
+    itemsAll.length >= count &&
+      search &&
+      !filters &&
+      getSearchItems(search, offset);
+    itemsAll.length >= count && filters && getStartFilterTypes(filters);
     next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
   useEffect(() => {
     setItemsByTypes();
   }, [itemsTypes]);
+
+  useEffect(() => {
+    itemsAll.length >= count && search && getSearchItems(search, offset);
+  }, [itemsAllTypes]);
 
   return (
     <>
@@ -187,7 +218,7 @@ export const Main = () => {
         <SelectForm
           handleChange={handleChangeSelectFilter}
           list={types}
-          value={selectedTypes}
+          value={filters ? filters : selectedTypes}
           width="230px"
           label="Filter by types"
           disabled={disabled}

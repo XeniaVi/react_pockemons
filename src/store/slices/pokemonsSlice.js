@@ -36,8 +36,9 @@ const pokemonsSlice = createSlice({
       };
     },
     setItems: (state, action) => {
+      console.log('setItems');
       const { data, offset } = action.payload;
-      console.log(2);
+      console.log(data);
       return {
         ...state,
         items: data,
