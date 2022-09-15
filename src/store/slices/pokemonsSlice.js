@@ -14,8 +14,8 @@ const pokemonsSlice = createSlice({
     itemsFull: [],
     next: null,
     count: 0,
-    limit: 10,
-    offset: 0,
+    limitState: 10,
+    offsetState: 0,
     countOfPages: 0,
     currentPage: 1,
   },
@@ -24,15 +24,15 @@ const pokemonsSlice = createSlice({
       return {
         ...state,
         currentPage: 1,
-        limit: Number(action.payload),
-        offset: 0,
+        limitState: Number(action.payload),
+        offsetState: 0,
       };
     },
     setCurrentPage: (state, action) => {
       return {
         ...state,
         currentPage: action.payload,
-        offset: state.limit * (action.payload - 1),
+        offsetState: state.limitState * (action.payload - 1),
       };
     },
     setItems: (state, action) => {
@@ -40,34 +40,37 @@ const pokemonsSlice = createSlice({
         ...state,
         items: action.payload,
         count: action.payload.length,
-        offset: 0,
+        offsetState: 0,
         currentPage: 1,
-        itemsDisplay: action.payload.slice(0, state.limit),
-        countOfPages: Math.ceil(action.payload.length / state.limit),
+        itemsDisplay: action.payload.slice(0, state.limitState),
+        countOfPages: Math.ceil(action.payload.length / state.limitState),
       };
     },
     setItemsDisplay: (state, action) => {
-      const { offset, limit } = action.payload;
+      const { offsetState, limitState } = action.payload;
       return {
         ...state,
-        offset,
-        limit,
-        itemsDisplay: state.items.slice(offset, offset + limit),
-        countOfPages: Math.ceil(state.items.length / limit),
+        offsetState,
+        limitState,
+        itemsDisplay: state.items.slice(offsetState, offsetState + limitState),
+        countOfPages: Math.ceil(state.items.length / limitState),
       };
     },
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
+      const { data, limit, offset } = action.payload;
       return {
         ...state,
-        items: action.payload.results,
-        itemsDisplay: action.payload.results,
-        itemsAll: action.payload.results,
-        count: action.payload.count,
-        previous: action.payload.previous,
-        next: action.payload.next,
-        countOfPages: Math.ceil(action.payload.count / state.limit),
+        items: data.results,
+        itemsDisplay: data.results,
+        itemsAll: data.results,
+        count: data.count,
+        previous: data.previous,
+        next: data.next,
+        limitState: limit,
+        offsetState: offset,
+        countOfPages: Math.ceil(data.count / limit),
       };
     });
     builder.addCase(actionGetAllPokemons.fulfilled, (state, action) => {

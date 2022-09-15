@@ -11,7 +11,7 @@ export const actionGetPokemons = createAsyncThunk(
   async (obj) => {
     try {
       const response = await getPokemons(obj);
-      return response.data;
+      return { data: response.data, limit: obj.limit, offset: obj.offset };
     } catch (error) {
       console.log(error);
     }

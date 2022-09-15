@@ -1,6 +1,14 @@
+/*eslint-disable*/
 import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  useQueryParams,
+  StringParam,
+  NumberParam,
+  ArrayParam,
+  withDefault,
+} from "use-query-params";
 import { limits } from "../constants";
 import {
   actionGetAllPokemons,
@@ -25,6 +33,8 @@ import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
 import { SelectForm } from "./SelectForm";
 
+const MyFiltersParam = withDefault(ArrayParam, []);
+
 export const Main = () => {
   const dispatch = useDispatch();
 
@@ -33,8 +43,8 @@ export const Main = () => {
     itemsAll,
     items,
     next,
-    limit,
-    offset,
+    limitState,
+    offsetState,
     count,
     countOfPages,
     currentPage,
@@ -47,6 +57,14 @@ export const Main = () => {
   const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
 
+  const [query, setQuery] = useQueryParams({
+    limit: NumberParam,
+    offset: NumberParam,
+    search: StringParam,
+    filters: MyFiltersParam,
+  });
+  const { filters, limit, offset, search } = query;
+
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
   };
@@ -57,6 +75,7 @@ export const Main = () => {
 
   const handleChangeSearchFilter = (event) => {
     setSearchValue(event.target.value);
+    setQuery({ search: event.target.value });
 
     const newItems = types.length
       ? items.filter((item) => item.name.includes(event.target.value))
@@ -87,6 +106,7 @@ export const Main = () => {
     }
 
     dispatch(setSelectedTypes(event.target.value));
+    setQuery({ filters: event.target.value });
   };
 
   const setItemsByTypes = () => {
@@ -106,18 +126,28 @@ export const Main = () => {
 
   useEffect(() => {
     !itemsAll.length &&
-      dispatch(actionGetPokemons({ endpoint: "pokemon", limit, offset }));
+      dispatch(
+        actionGetPokemons({
+          endpoint: "pokemon",
+          limit,
+          offset,
+        })
+      );
 
     dispatch(actionGetPokemonsType({ endpoint: "type" }));
   }, []);
 
   useEffect(() => {
-    dispatch(setItemsDisplay({ offset, limit }));
-  }, [limit, offset]);
+    if (limitState !== limit || offsetState !== offsetState) {
+      dispatch(setItemsDisplay({ offsetState, limitState }));
+      setQuery({ limit: limitState });
+      setQuery({ offset: offsetState });
+    }
+  }, [limitState, offsetState]);
 
   useEffect(() => {
-    setDisabled(itemsAll.length !== count);
-    next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
+    setDisabled(itemsAll.length !== 100);
+    next && itemsAll.length < 100 && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
   useEffect(() => {
@@ -130,7 +160,7 @@ export const Main = () => {
         <Pagination
           onChange={handleChangePagination}
           page={currentPage}
-          count={countOfPages}
+          count={countOfPages ? countOfPages : 0}
           disabled={disabled}
         />
         <SelectForm
