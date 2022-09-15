@@ -18,6 +18,12 @@ const typesSlice = createSlice({
         selectedTypes: action.payload,
       };
     },
+    setItemsTypes: (state, action) => {
+      return {
+        ...state,
+        items: action.payload,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemonsType.fulfilled, (state, action) => {
@@ -41,6 +47,6 @@ const typesSlice = createSlice({
   },
 });
 
-export const { setSelectedTypes } = typesSlice.actions;
+export const { setSelectedTypes, setItemsTypes } = typesSlice.actions;
 
 export default typesSlice.reducer;

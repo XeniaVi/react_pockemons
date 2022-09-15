@@ -14,7 +14,7 @@ import {
   setItemsDisplay,
   setLimit,
 } from "../store/slices/pokemonsSlice";
-import { setSelectedTypes } from "../store/slices/typesSlice";
+import { setItemsTypes, setSelectedTypes } from "../store/slices/typesSlice";
 import { FlexContainer } from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
@@ -28,7 +28,7 @@ export const Main = () => {
   const next = useSelector((state) => state.pokemons.next);
   const limit = useSelector((state) => state.pokemons.limit);
   const offset = useSelector((state) => state.pokemons.offset);
-  // const count = useSelector((state) => state.pokemons.count);
+  const count = useSelector((state) => state.pokemons.count);
   const countOfPages = useSelector((state) => state.pokemons.countOfPages);
   const currentPage = useSelector((state) => state.pokemons.currentPage);
   const types = useSelector((state) => state.types.types);
@@ -67,19 +67,21 @@ export const Main = () => {
       })[0];
 
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
+    } else if (!type) {
+      dispatch(setItemsTypes([]));
+      dispatch(setItems(itemsAll));
     } else {
-      console.log(itemsTypes); //TODO: add removing items
-      console.log(1);
+      const newItems = itemsTypes.filter((item) => item.type === type);
+      dispatch(setItemsTypes(newItems));
     }
 
     dispatch(setSelectedTypes(event.target.value));
   };
 
   const setItemsByTypes = () => {
-    console.log(itemsTypes);
-
     const newItems =
       itemsTypes.length && itemsTypes[itemsTypes.length - 1].items;
+
     itemsTypes.length && dispatch(setItems(newItems));
   };
 
@@ -95,8 +97,8 @@ export const Main = () => {
   }, [limit, offset]);
 
   useEffect(() => {
-    setDisabled(itemsAll.length !== 50);
-    next && itemsAll.length < 50 && dispatch(actionGetAllPokemons(next));
+    setDisabled(itemsAll.length !== count);
+    next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
   useEffect(() => {
