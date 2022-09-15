@@ -9,7 +9,8 @@ const typesSlice = createSlice({
   initialState: {
     types: [],
     selectedTypes: [],
-    items: [],
+    itemsTypes: [],
+    itemsAllTypes: [],
   },
   reducers: {
     setSelectedTypes: (state, action) => {
@@ -21,7 +22,20 @@ const typesSlice = createSlice({
     setItemsTypes: (state, action) => {
       return {
         ...state,
-        items: action.payload,
+        itemsTypes: action.payload,
+      };
+    },
+    setItemsAllTypes: (state, action) => {
+      return {
+        ...state,
+        itemsAllTypes: action.payload,
+      };
+    },
+    reset: (state) => {
+      return {
+        ...state,
+        itemsAllTypes: [],
+        itemsTypes: [],
       };
     },
   },
@@ -40,13 +54,15 @@ const typesSlice = createSlice({
 
         return {
           ...state,
-          items: [...state.items, { type, items: newItems }],
+          itemsTypes: [...state.itemsTypes, { type, items: newItems }],
+          itemsAllTypes: [...state.itemsAllTypes, ...newItems],
         };
       }
     );
   },
 });
 
-export const { setSelectedTypes, setItemsTypes } = typesSlice.actions;
+export const { setSelectedTypes, setItemsTypes, setItemsAllTypes, reset } =
+  typesSlice.actions;
 
 export default typesSlice.reducer;

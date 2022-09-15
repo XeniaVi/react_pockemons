@@ -14,7 +14,12 @@ import {
   setItemsDisplay,
   setLimit,
 } from "../store/slices/pokemonsSlice";
-import { setItemsTypes, setSelectedTypes } from "../store/slices/typesSlice";
+import {
+  reset,
+  setItemsAllTypes,
+  setItemsTypes,
+  setSelectedTypes,
+} from "../store/slices/typesSlice";
 import { FlexContainer } from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
@@ -23,17 +28,21 @@ import { SelectForm } from "./SelectForm";
 export const Main = () => {
   const dispatch = useDispatch();
 
-  const itemsDisplay = useSelector((state) => state.pokemons.itemsDisplay);
-  const itemsAll = useSelector((state) => state.pokemons.itemsAll);
-  const next = useSelector((state) => state.pokemons.next);
-  const limit = useSelector((state) => state.pokemons.limit);
-  const offset = useSelector((state) => state.pokemons.offset);
-  const count = useSelector((state) => state.pokemons.count);
-  const countOfPages = useSelector((state) => state.pokemons.countOfPages);
-  const currentPage = useSelector((state) => state.pokemons.currentPage);
-  const types = useSelector((state) => state.types.types);
-  const itemsTypes = useSelector((state) => state.types.items);
-  const selectedTypes = useSelector((state) => state.types.selectedTypes);
+  const {
+    itemsDisplay,
+    itemsAll,
+    items,
+    next,
+    limit,
+    offset,
+    count,
+    countOfPages,
+    currentPage,
+  } = useSelector((state) => state.pokemons);
+
+  const { types, selectedTypes, itemsTypes, itemsAllTypes } = useSelector(
+    (state) => state.types
+  );
 
   const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -49,13 +58,15 @@ export const Main = () => {
   const handleChangeSearchFilter = (event) => {
     setSearchValue(event.target.value);
 
-    const newItems = itemsAll.filter((item) =>
-      item.name.includes(event.target.value)
-    );
+    const newItems = types.length
+      ? items.filter((item) => item.name.includes(event.target.value))
+      : itemsAll.filter((item) => item.name.includes(event.target.value));
+
+    const resetItems = types.length ? itemsAllTypes : itemsAll;
 
     event.target.value
       ? dispatch(setItems(newItems))
-      : dispatch(setItems(itemsAll));
+      : dispatch(setItems(resetItems));
   };
 
   const handleChangeSelectFilter = (event) => {
@@ -68,7 +79,7 @@ export const Main = () => {
 
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
     } else if (!type) {
-      dispatch(setItemsTypes([]));
+      dispatch(reset());
       dispatch(setItems(itemsAll));
     } else {
       const newItems = itemsTypes.filter((item) => item.type === type);
@@ -79,10 +90,18 @@ export const Main = () => {
   };
 
   const setItemsByTypes = () => {
-    const newItems =
-      itemsTypes.length && itemsTypes[itemsTypes.length - 1].items;
+    if (itemsTypes.length) {
+      const newItems = [];
 
-    itemsTypes.length && dispatch(setItems(newItems));
+      for (let i = 0; i < itemsTypes.length; i++) {
+        for (let j = 0; j < itemsTypes[i].items.length; j++) {
+          newItems.push(itemsTypes[i].items[j]);
+        }
+      }
+
+      dispatch(setItems(newItems));
+      dispatch(setItemsAllTypes(newItems));
+    }
   };
 
   useEffect(() => {
