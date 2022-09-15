@@ -79,18 +79,23 @@ export const Main = () => {
     setQuery({ offset: 0 });
   };
 
+  const getSearchItems = (value, offset) => {
+    console.log('getSearchItems');
+    const newItems = selectedTypes.length
+      ? items.filter((item) => item.name.includes(value))
+      : itemsAll.filter((item) => item.name.includes(value));
+
+    const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
+
+    value
+      ? dispatch(setItems({ data: newItems, offset }))
+      : dispatch(setItems({ data: resetItems, offset }));
+  };
+
   const handleChangeSearchFilter = (event) => {
     setSearchValue(event.target.value);
-
-    const newItems = types.length
-      ? items.filter((item) => item.name.includes(event.target.value))
-      : itemsAll.filter((item) => item.name.includes(event.target.value));
-
-    const resetItems = types.length ? itemsAllTypes : itemsAll;
-
-    event.target.value
-      ? dispatch(setItems(newItems))
-      : dispatch(setItems(resetItems));
+    setQuery({ search: event.target.value });
+    getSearchItems(event.target.value, 0);
   };
 
   const handleChangeSelectFilter = (event) => {
@@ -104,7 +109,7 @@ export const Main = () => {
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
     } else if (!type) {
       dispatch(reset());
-      dispatch(setItems(itemsAll));
+      dispatch(setItems({ data: itemsAll, offset: 0 }));
     } else {
       const newItems = itemsTypes.filter((item) => item.type === type);
       dispatch(setItemsTypes(newItems));
@@ -123,7 +128,7 @@ export const Main = () => {
         }
       }
 
-      dispatch(setItems(newItems));
+      dispatch(setItems({ data: newItems, offset }));
       dispatch(setItemsAllTypes(newItems));
     }
   };
@@ -148,6 +153,7 @@ export const Main = () => {
 
   useEffect(() => {
     setDisabled(itemsAll.length !== count);
+    itemsAll.length >= count && search && getSearchItems(search, offset);
     next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
 
@@ -174,7 +180,7 @@ export const Main = () => {
         />
         <InputSearch
           label="Search by name"
-          value={searchValue}
+          value={search ? search : searchValue}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
         />

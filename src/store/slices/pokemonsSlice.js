@@ -36,15 +36,16 @@ const pokemonsSlice = createSlice({
       };
     },
     setItems: (state, action) => {
-      console.log('setItems');
+      const { data, offset } = action.payload;
+      console.log(2);
       return {
         ...state,
-        items: action.payload,
-        count: action.payload.length,
-        offsetState: 0,
-        currentPage: 1,
-        itemsDisplay: action.payload.slice(0, state.limitState),
-        countOfPages: Math.ceil(action.payload.length / state.limitState),
+        items: data,
+        count: data.length,
+        offsetState: offset,
+        currentPage: offset / state.limitState + 1,
+        itemsDisplay: data.slice(offset, state.limitState + offset),
+        countOfPages: Math.ceil(data.length / state.limitState),
       };
     },
     setSearchParams: (state, action) => {
