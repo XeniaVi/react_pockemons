@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colors } from "../constants";
-import { Button, CircularProgress, Typography } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import {
   DetailedContainer,
   TypePokemon,
@@ -13,6 +13,8 @@ import {
   StatsItemText,
   StatsList,
   ImageContainer,
+  DetailedTypography,
+  MainDetailedTypography,
 } from "../styles/component";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,9 +54,9 @@ export const DetailedInfo = () => {
           </Button>
           <FlexContainer justifyContent="space-around">
             <FlexInnerDetailedInfo>
-              <Typography variant="h3" component="h2">
+              <MainDetailedTypography variant="h3" component="h2">
                 {item.name.toUpperCase()}
-              </Typography>
+              </MainDetailedTypography>
               <FlexInnerDetailedInfo>
                 {item.types.map((item) => (
                   <TypePokemon
@@ -69,9 +71,9 @@ export const DetailedInfo = () => {
 
             <FlexInnerDetailedInfo>
               <FlexContainer>
-                <Typography variant="h4" component="h4">
+                <DetailedTypography variant="h4" component="h4">
                   Height:
-                </Typography>
+                </DetailedTypography>
                 <StatsItemNumber
                   fs="2rem"
                   color={colors[item.types[0].type.name]}
@@ -81,9 +83,9 @@ export const DetailedInfo = () => {
               </FlexContainer>
 
               <FlexContainer>
-                <Typography variant="h4" component="h4">
+                <DetailedTypography variant="h4" component="h4">
                   Weight:
-                </Typography>
+                </DetailedTypography>
                 <StatsItemNumber
                   fs="2rem"
                   color={colors[item.types[0].type.name]}
@@ -93,9 +95,9 @@ export const DetailedInfo = () => {
               </FlexContainer>
 
               <FlexContainer>
-                <Typography variant="h4" component="h4">
+                <DetailedTypography variant="h4" component="h4">
                   Abilities:
-                </Typography>
+                </DetailedTypography>
 
                 <StatsList>
                   {item.abilities.map((item) => (
@@ -115,9 +117,9 @@ export const DetailedInfo = () => {
           </FlexContainer>
 
           <FlexInnerCard>
-            <Typography variant="h4" component="h4">
+            <DetailedTypography variant="h4" component="h4">
               Stats:
-            </Typography>
+            </DetailedTypography>
 
             <StatsList>
               {item.stats.map((item) => (

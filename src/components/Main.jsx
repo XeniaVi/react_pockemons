@@ -34,7 +34,7 @@ import {
   stylesInput,
   stylesSelectForm,
 } from "../styles";
-import { FlexContainer } from "../styles/component";
+import { FilterContainer } from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
 import { SelectForm } from "./SelectForm";
@@ -197,7 +197,7 @@ export const Main = () => {
 
   return (
     <>
-      <FlexContainer>
+      <FilterContainer>
         <SelectForm
           handleChange={handleChangeSelect}
           list={limits}
@@ -235,7 +235,7 @@ export const Main = () => {
           sx={{ width: "100%" }}
           size="small"
         />
-      </FlexContainer>
+      </FilterContainer>
       {!isLoading ? <PokemonList items={itemsDisplay} /> : <CircularProgress />}
     </>
   );
