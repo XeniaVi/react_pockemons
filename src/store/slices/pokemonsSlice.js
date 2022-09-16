@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
   actionGetDetailedInfo,
   actionGetPokemons,
   actionGetAllPokemons,
-} from '../asyncActions';
+} from "../asyncActions";
 
 const pokemonsSlice = createSlice({
-  name: 'pokemonsSlice',
+  name: "pokemonsSlice",
   initialState: {
     itemsAll: [],
     items: [],
@@ -36,7 +36,7 @@ const pokemonsSlice = createSlice({
       };
     },
     setItems: (state, action) => {
-      console.log('setItems');
+      console.log("setItems");
       const { data, offset } = action.payload;
       console.log(data);
       return {
@@ -49,17 +49,8 @@ const pokemonsSlice = createSlice({
         countOfPages: Math.ceil(data.length / state.limitState),
       };
     },
-    setSearchParams: (state, action) => {
-      const { limit, offset } = action.payload;
-      console.log(limit, offset);
-      return {
-        ...state,
-        limitState: limit,
-        offsetState: offset,
-      };
-    },
     setItemsDisplay: (state, action) => {
-      console.log('setItemsDisplay');
+      console.log("setItemsDisplay");
       const { offsetState, limitState } = action.payload;
       console.log(offsetState, limitState);
       return {
@@ -74,7 +65,7 @@ const pokemonsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
-      const { data, limit } = action.payload;
+      console.log(action.payload);
       return {
         ...state,
         items: action.payload.results,
@@ -103,12 +94,7 @@ const pokemonsSlice = createSlice({
   },
 });
 
-export const {
-  setLimit,
-  setCurrentPage,
-  setItems,
-  setItemsDisplay,
-  setSearchParams,
-} = pokemonsSlice.actions;
+export const { setLimit, setCurrentPage, setItems, setItemsDisplay } =
+  pokemonsSlice.actions;
 
 export default pokemonsSlice.reducer;

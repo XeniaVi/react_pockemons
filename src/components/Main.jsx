@@ -1,38 +1,37 @@
 /*eslint-disable*/
-import { CircularProgress, Pagination } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress, Pagination } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useQueryParams,
   StringParam,
   NumberParam,
   ArrayParam,
   withDefault,
-} from 'use-query-params';
-import { limits } from '../constants';
+} from "use-query-params";
+import { limits } from "../constants";
 import {
   actionGetAllPokemons,
   actionGetPokemons,
   actionGetPokemonsAccordingTypes,
   actionGetPokemonsType,
-} from '../store/asyncActions';
+} from "../store/asyncActions";
 import {
   setCurrentPage,
   setItems,
   setItemsDisplay,
   setLimit,
-  setSearchParams,
-} from '../store/slices/pokemonsSlice';
+} from "../store/slices/pokemonsSlice";
 import {
   reset,
   setItemsAllTypes,
   setItemsTypes,
   setSelectedTypes,
-} from '../store/slices/typesSlice';
-import { FlexContainer } from '../styles/component';
-import { InputSearch } from './InputSearch';
-import { PokemonList } from './PokemonList';
-import { SelectForm } from './SelectForm';
+} from "../store/slices/typesSlice";
+import { FlexContainer } from "../styles/component";
+import { InputSearch } from "./InputSearch";
+import { PokemonList } from "./PokemonList";
+import { SelectForm } from "./SelectForm";
 
 const FiltersParam = withDefault(ArrayParam, []);
 
@@ -65,9 +64,8 @@ export const Main = () => {
     (state) => state.types
   );
 
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const [isLoading, setIsLoading] = useState(Boolean(search));
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -81,7 +79,7 @@ export const Main = () => {
   };
 
   const getSearchItems = (value, offset) => {
-    console.log('getSearchItems');
+    console.log("getSearchItems");
     const newItems = selectedTypes.length
       ? itemsAllTypes.filter((item) => item.name.includes(value))
       : itemsAll.filter((item) => item.name.includes(value));
@@ -98,7 +96,7 @@ export const Main = () => {
     value
       ? dispatch(setItems({ data: newItems, offset }))
       : dispatch(setItems({ data: resetItems, offset }));
-      
+
     !offset && setQuery({ offset: 0 });
   };
 
@@ -123,6 +121,8 @@ export const Main = () => {
     } else {
       const newItems = itemsTypes.filter((item) => item.type === type);
       dispatch(setItemsTypes(newItems));
+      dispatch(setCurrentPage(1));
+      setQuery({ offset: 0 });
     }
 
     dispatch(setSelectedTypes(event.target.value));
@@ -130,7 +130,7 @@ export const Main = () => {
   };
 
   const getStartFilterTypes = (filters) => {
-    console.log('getStartFilterTypes');
+    console.log("getStartFilterTypes");
     for (let i = 0; i < filters.length; i++) {
       const item = types.filter((item) => filters[i] === item.name)[0];
       dispatch(
@@ -141,7 +141,6 @@ export const Main = () => {
   };
 
   const setItemsByTypes = () => {
-    console.log(itemsTypes);
     if (itemsTypes.length) {
       const newItems = [];
 
@@ -161,10 +160,10 @@ export const Main = () => {
   useEffect(() => {
     !itemsAll.length &&
       dispatch(
-        actionGetPokemons({ endpoint: 'pokemon', limitState, offsetState })
+        actionGetPokemons({ endpoint: "pokemon", limitState, offsetState })
       );
 
-    dispatch(actionGetPokemonsType({ endpoint: 'type' }));
+    dispatch(actionGetPokemonsType({ endpoint: "type" }));
   }, []);
 
   useEffect(() => {
@@ -227,7 +226,11 @@ export const Main = () => {
           multiple={true}
         />
       </FlexContainer>
-      {isLoading ? <CircularProgress /> : <PokemonList items={itemsDisplay} />}
+      {itemsDisplay.length ? (
+        <PokemonList items={itemsDisplay} />
+      ) : (
+        <CircularProgress />
+      )}
     </>
   );
 };
