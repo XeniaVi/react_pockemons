@@ -41,7 +41,7 @@ export const PokemonCard = React.memo(({ item }) => {
         {currentItem.sprites.other.home.front_default ? (
           <CardImage
             src={currentItem.sprites.other.home.front_default}
-            alt=""
+            alt={item.name}
           />
         ) : (
           <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />

@@ -109,7 +109,8 @@ export const DetailedInfo = () => {
               {item.sprites.other.home.front_default ? (
                 <SmallImage
                   src={item.sprites.other.home.front_default}
-                ></SmallImage>
+                  alt={item.name}
+                />
               ) : (
                 <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
               )}
