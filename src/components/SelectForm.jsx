@@ -53,5 +53,5 @@ SelectForm.propTypes = {
   disabled: PropTypes.bool.isRequired,
   MenuProps: PropTypes.object,
   MenuItemProps: PropTypes.func,
-  styles: PropTypes.object,
+  styles: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
 };

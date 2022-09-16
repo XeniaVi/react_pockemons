@@ -54,7 +54,7 @@ export const DetailedInfo = () => {
           </Button>
           <FlexContainer justifyContent="space-around">
             <FlexInnerDetailedInfo>
-              <MainDetailedTypography variant="h3" component="h2">
+              <MainDetailedTypography component="h2">
                 {item.name.toUpperCase()}
               </MainDetailedTypography>
               <FlexInnerDetailedInfo>
@@ -71,9 +71,7 @@ export const DetailedInfo = () => {
 
             <FlexInnerDetailedInfo>
               <FlexContainer>
-                <DetailedTypography variant="h4" component="h4">
-                  Height:
-                </DetailedTypography>
+                <DetailedTypography component="h4">Height:</DetailedTypography>
                 <StatsItemNumber
                   fs="2rem"
                   color={colors[item.types[0].type.name]}
@@ -83,9 +81,7 @@ export const DetailedInfo = () => {
               </FlexContainer>
 
               <FlexContainer>
-                <DetailedTypography variant="h4" component="h4">
-                  Weight:
-                </DetailedTypography>
+                <DetailedTypography component="h4">Weight:</DetailedTypography>
                 <StatsItemNumber
                   fs="2rem"
                   color={colors[item.types[0].type.name]}
@@ -95,7 +91,7 @@ export const DetailedInfo = () => {
               </FlexContainer>
 
               <FlexContainer>
-                <DetailedTypography variant="h4" component="h4">
+                <DetailedTypography component="h4">
                   Abilities:
                 </DetailedTypography>
 
@@ -117,9 +113,7 @@ export const DetailedInfo = () => {
           </FlexContainer>
 
           <FlexInnerCard>
-            <DetailedTypography variant="h4" component="h4">
-              Stats:
-            </DetailedTypography>
+            <DetailedTypography component="h4">Stats:</DetailedTypography>
 
             <StatsList>
               {item.stats.map((item) => (
