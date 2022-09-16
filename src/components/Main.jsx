@@ -34,7 +34,11 @@ import {
   stylesInput,
   stylesSelectForm,
 } from "../styles";
-import { FilterContainer } from "../styles/component";
+import {
+  FilterContainer,
+  FlexContainer,
+  Typography,
+} from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
 import { SelectForm } from "./SelectForm";
@@ -227,16 +231,32 @@ export const Main = () => {
           MenuItemProps={MenuItemPropsFilter}
           styles={stylesSelectForm}
         />
-        <Pagination
-          onChange={handleChangePagination}
-          page={currentPage}
-          count={countOfPages}
-          disabled={disabled}
-          sx={{ width: "100%" }}
-          size="small"
-        />
+        {itemsDisplay.length > 0 && (
+          <Pagination
+            onChange={handleChangePagination}
+            page={currentPage}
+            count={countOfPages}
+            disabled={disabled}
+            sx={{ width: "100%" }}
+            size="small"
+          />
+        )}
       </FilterContainer>
-      {!isLoading ? <PokemonList items={itemsDisplay} /> : <CircularProgress />}
+      {!isLoading ? (
+        itemsDisplay.length ? (
+          <PokemonList items={itemsDisplay} />
+        ) : (
+          <FlexContainer sx={{ height: "300px" }}>
+            <Typography variant="h3" component="span" sx={{ mt: 3 }}>
+              Not found items. Change filters
+            </Typography>
+          </FlexContainer>
+        )
+      ) : (
+        <FlexContainer sx={{ height: "300px" }}>
+          <CircularProgress />
+        </FlexContainer>
+      )}
     </>
   );
 };

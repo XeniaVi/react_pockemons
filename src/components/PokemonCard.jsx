@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Typography, CircularProgress } from "@mui/material";
+import { Typography, CircularProgress, Avatar } from "@mui/material";
 import {
   Card,
   CardImage,
@@ -10,7 +10,7 @@ import {
 import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
-import { stylesCard } from "../styles";
+import { sizeDefaultAvatar, stylesCard } from "../styles";
 
 export const PokemonCard = React.memo(({ item }) => {
   const dispatch = useDispatch();
@@ -38,7 +38,14 @@ export const PokemonCard = React.memo(({ item }) => {
         >
           {item.name.toUpperCase()}
         </Typography>
-        <CardImage src={currentItem.sprites.other.home.front_default} alt="" />
+        {currentItem.sprites.other.home.front_default ? (
+          <CardImage
+            src={currentItem.sprites.other.home.front_default}
+            alt={item.name}
+          />
+        ) : (
+          <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+        )}
       </Card>
     </CustomLink>
   ) : (

@@ -157,6 +157,7 @@ export const Card = styled(MuiCard)`
   align-items: center;
   gap: 1rem;
   padding: 1rem;
+  min-height: 189px;
   cursor: pointer;
   background-color: ${(props) => props.bgcolor} !important;
   overflow: visible !important;
