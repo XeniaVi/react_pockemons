@@ -180,7 +180,7 @@ export const Main = () => {
 
       itemsAll.length >= count &&
         search &&
-        !filters &&
+        !filters.length &&
         getSearchItems(search, offset);
       itemsAll.length >= count && filters && getStartFilterTypes(filters);
       next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
