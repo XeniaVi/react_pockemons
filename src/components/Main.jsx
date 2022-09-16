@@ -1,37 +1,38 @@
 /*eslint-disable*/
-import { CircularProgress, Pagination } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress, Pagination } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   useQueryParams,
   StringParam,
   NumberParam,
   ArrayParam,
   withDefault,
-} from "use-query-params";
-import { limits } from "../constants";
+} from 'use-query-params';
+import { limits } from '../constants';
 import {
   actionGetAllPokemons,
   actionGetPokemons,
   actionGetPokemonsAccordingTypes,
   actionGetPokemonsType,
-} from "../store/asyncActions";
+} from '../store/asyncActions';
 import {
   setCurrentPage,
   setItems,
   setItemsDisplay,
   setLimit,
-} from "../store/slices/pokemonsSlice";
+  setSearchParams,
+} from '../store/slices/pokemonsSlice';
 import {
   reset,
   setItemsAllTypes,
   setItemsTypes,
   setSelectedTypes,
-} from "../store/slices/typesSlice";
-import { FlexContainer } from "../styles/component";
-import { InputSearch } from "./InputSearch";
-import { PokemonList } from "./PokemonList";
-import { SelectForm } from "./SelectForm";
+} from '../store/slices/typesSlice';
+import { FlexContainer } from '../styles/component';
+import { InputSearch } from './InputSearch';
+import { PokemonList } from './PokemonList';
+import { SelectForm } from './SelectForm';
 
 const FiltersParam = withDefault(ArrayParam, []);
 
@@ -53,37 +54,52 @@ export const Main = () => {
     next,
     limitState,
     offsetState,
-    count,
+    // count,
     countOfPages,
     currentPage,
   } = useSelector((state) => state.pokemons);
+
+  const count = 100;
 
   const { types, selectedTypes, itemsTypes, itemsAllTypes } = useSelector(
     (state) => state.types
   );
 
-  const [searchValue, setSearchValue] = useState(search);
+  const [searchValue, setSearchValue] = useState('');
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(Boolean(search));
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
+    setQuery({ offset: value * limitState - limitState });
   };
 
   const handleChangeSelect = (event) => {
     dispatch(setLimit(event.target.value));
+    setQuery({ limit: event.target.value });
+    setQuery({ offset: 0 });
   };
 
   const getSearchItems = (value, offset) => {
+    console.log('getSearchItems');
     const newItems = selectedTypes.length
-      ? items.filter((item) => item.name.includes(value))
+      ? itemsAllTypes.filter((item) => item.name.includes(value))
       : itemsAll.filter((item) => item.name.includes(value));
 
     const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
 
+    console.log(items);
+    console.log(itemsAllTypes);
+    console.log(newItems);
+    console.log(selectedTypes);
+    console.log(value);
+    console.log(offset);
+
     value
       ? dispatch(setItems({ data: newItems, offset }))
       : dispatch(setItems({ data: resetItems, offset }));
+      
+    !offset && setQuery({ offset: 0 });
   };
 
   const handleChangeSearchFilter = (event) => {
@@ -114,14 +130,14 @@ export const Main = () => {
   };
 
   const getStartFilterTypes = (filters) => {
+    console.log('getStartFilterTypes');
     for (let i = 0; i < filters.length; i++) {
       const item = types.filter((item) => filters[i] === item.name)[0];
       dispatch(
         actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
       );
     }
-
-    console.log(offsetState);
+    dispatch(setSelectedTypes(filters));
   };
 
   const setItemsByTypes = () => {
@@ -135,6 +151,8 @@ export const Main = () => {
         }
       }
 
+      console.log(newItems);
+
       dispatch(setItems({ data: newItems, offset }));
       dispatch(setItemsAllTypes(newItems));
     }
@@ -143,29 +161,27 @@ export const Main = () => {
   useEffect(() => {
     !itemsAll.length &&
       dispatch(
-        actionGetPokemons({
-          endpoint: "pokemon",
-          limit,
-        })
+        actionGetPokemons({ endpoint: 'pokemon', limitState, offsetState })
       );
 
-    dispatch(actionGetPokemonsType({ endpoint: "type" }));
-    filters && dispatch(setSelectedTypes(filters));
+    dispatch(actionGetPokemonsType({ endpoint: 'type' }));
   }, []);
 
   useEffect(() => {
-    if (limitState !== limit || offsetState !== offset) {
-      dispatch(setItemsDisplay({ offsetState, limitState }));
-      setQuery({ limit: limitState });
-      setQuery({ offset: offsetState });
-    }
-  }, [limitState, offsetState]);
+    dispatch(
+      setItemsDisplay({
+        offsetState: offset ? offset : offsetState,
+        limitState: limit ? limit : limitState,
+      })
+    );
+  }, [limitState, offsetState, items]);
 
   useEffect(() => {
     setDisabled(itemsAll.length !== count);
-    setIsLoading(itemsAll.length !== count);
-    itemsAll.length >= count && search && getSearchItems(search, offset);
-    console.log(filters);
+    itemsAll.length >= count &&
+      search &&
+      !filters &&
+      getSearchItems(search, offset);
     itemsAll.length >= count && filters && getStartFilterTypes(filters);
     next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
   }, [next]);
@@ -173,6 +189,10 @@ export const Main = () => {
   useEffect(() => {
     setItemsByTypes();
   }, [itemsTypes]);
+
+  useEffect(() => {
+    itemsAll.length >= count && search && getSearchItems(search, offset);
+  }, [itemsAllTypes]);
 
   return (
     <>
@@ -186,21 +206,21 @@ export const Main = () => {
         <SelectForm
           handleChange={handleChangeSelect}
           list={limits}
-          value={limitState}
+          value={limit ? limit : limitState}
           width="230px"
           label="Items to show per page"
           disabled={disabled}
         />
         <InputSearch
           label="Search by name"
-          value={searchValue || ""}
+          value={search ? search : searchValue}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
         />
         <SelectForm
           handleChange={handleChangeSelectFilter}
           list={types}
-          value={selectedTypes}
+          value={filters ? filters : selectedTypes}
           width="230px"
           label="Filter by types"
           disabled={disabled}

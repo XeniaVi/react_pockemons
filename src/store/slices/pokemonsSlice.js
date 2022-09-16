@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 import {
   actionGetDetailedInfo,
   actionGetPokemons,
   actionGetAllPokemons,
-} from "../asyncActions";
+} from '../asyncActions';
 
 const pokemonsSlice = createSlice({
-  name: "pokemonsSlice",
+  name: 'pokemonsSlice',
   initialState: {
     itemsAll: [],
     items: [],
@@ -36,8 +36,9 @@ const pokemonsSlice = createSlice({
       };
     },
     setItems: (state, action) => {
+      console.log('setItems');
       const { data, offset } = action.payload;
-      console.log(2);
+      console.log(data);
       return {
         ...state,
         items: data,
@@ -48,12 +49,24 @@ const pokemonsSlice = createSlice({
         countOfPages: Math.ceil(data.length / state.limitState),
       };
     },
+    setSearchParams: (state, action) => {
+      const { limit, offset } = action.payload;
+      console.log(limit, offset);
+      return {
+        ...state,
+        limitState: limit,
+        offsetState: offset,
+      };
+    },
     setItemsDisplay: (state, action) => {
+      console.log('setItemsDisplay');
       const { offsetState, limitState } = action.payload;
+      console.log(offsetState, limitState);
       return {
         ...state,
         offsetState,
         limitState,
+        currentPage: offsetState / limitState + 1,
         itemsDisplay: state.items.slice(offsetState, offsetState + limitState),
         countOfPages: Math.ceil(state.items.length / limitState),
       };
@@ -64,17 +77,13 @@ const pokemonsSlice = createSlice({
       const { data, limit } = action.payload;
       return {
         ...state,
-        items: data.results,
-        itemsDisplay: data.results,
-        itemsAll: data.results,
-        count: data.count,
-        previous: data.previous,
-        next: data.next,
-        limitState: limit ? limit : state.limitState,
-        offsetState: 0,
-        countOfPages: limit
-          ? Math.ceil(data.count / limit)
-          : Math.ceil(data.count / state.limitState),
+        items: action.payload.results,
+        itemsDisplay: action.payload.results,
+        itemsAll: action.payload.results,
+        count: action.payload.count,
+        previous: action.payload.previous,
+        next: action.payload.next,
+        countOfPages: Math.ceil(action.payload.count / state.limitState),
       };
     });
     builder.addCase(actionGetAllPokemons.fulfilled, (state, action) => {
@@ -94,7 +103,12 @@ const pokemonsSlice = createSlice({
   },
 });
 
-export const { setLimit, setCurrentPage, setItems, setItemsDisplay } =
-  pokemonsSlice.actions;
+export const {
+  setLimit,
+  setCurrentPage,
+  setItems,
+  setItemsDisplay,
+  setSearchParams,
+} = pokemonsSlice.actions;
 
 export default pokemonsSlice.reducer;
