@@ -53,12 +53,10 @@ export const Main = () => {
     next,
     limitState,
     offsetState,
-    // count,
+    count,
     countOfPages,
     currentPage,
   } = useSelector((state) => state.pokemons);
-
-  const count = 100;
 
   const { types, selectedTypes, itemsTypes, itemsAllTypes } = useSelector(
     (state) => state.types
@@ -66,6 +64,9 @@ export const Main = () => {
 
   const [searchValue, setSearchValue] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(
+    Boolean(offset || limit || filters || search)
+  );
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -131,13 +132,16 @@ export const Main = () => {
 
   const getStartFilterTypes = (filters) => {
     console.log("getStartFilterTypes");
-    for (let i = 0; i < filters.length; i++) {
-      const item = types.filter((item) => filters[i] === item.name)[0];
-      dispatch(
-        actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
-      );
+    console.log(filters, selectedTypes);
+    if (filters.length !== selectedTypes.length) {
+      for (let i = 0; i < filters.length; i++) {
+        const item = types.filter((item) => filters[i] === item.name)[0];
+        dispatch(
+          actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
+        );
+      }
+      dispatch(setSelectedTypes(filters));
     }
-    dispatch(setSelectedTypes(filters));
   };
 
   const setItemsByTypes = () => {
@@ -176,13 +180,20 @@ export const Main = () => {
   }, [limitState, offsetState, items]);
 
   useEffect(() => {
-    setDisabled(itemsAll.length !== count);
-    itemsAll.length >= count &&
-      search &&
-      !filters &&
-      getSearchItems(search, offset);
-    itemsAll.length >= count && filters && getStartFilterTypes(filters);
-    next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
+    console.log("1 itemsAll.length, count", itemsAll.length, count);
+    console.log("isLoading ", isLoading);
+    if (itemsAll.length) {
+      console.log("2 itemsAll.length, count", itemsAll.length, count);
+      setDisabled(itemsAll.length !== count);
+      setIsLoading(itemsAll.length !== count);
+
+      itemsAll.length >= count &&
+        search &&
+        !filters &&
+        getSearchItems(search, offset);
+      itemsAll.length >= count && filters && getStartFilterTypes(filters);
+      next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
+    }
   }, [next]);
 
   useEffect(() => {
@@ -226,11 +237,7 @@ export const Main = () => {
           multiple={true}
         />
       </FlexContainer>
-      {itemsDisplay.length ? (
-        <PokemonList items={itemsDisplay} />
-      ) : (
-        <CircularProgress />
-      )}
+      {!isLoading ? <PokemonList items={itemsDisplay} /> : <CircularProgress />}
     </>
   );
 };

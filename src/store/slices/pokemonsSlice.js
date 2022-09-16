@@ -38,11 +38,10 @@ const pokemonsSlice = createSlice({
     setItems: (state, action) => {
       console.log("setItems");
       const { data, offset } = action.payload;
-      console.log(data);
+
       return {
         ...state,
         items: data,
-        count: data.length,
         offsetState: offset,
         currentPage: offset / state.limitState + 1,
         itemsDisplay: data.slice(offset, state.limitState + offset),
