@@ -31,6 +31,12 @@ export const FlexContainer = styled(Box)`
   align-items: ${(props) => props.alignItems || "center"};
 `;
 
+export const FilterContainer = styled(FlexContainer)`
+  @media (max-width: 860px) {
+    flex-direction: column;
+  }
+`;
+
 export const FlexInnerDetailedInfo = styled(FlexContainer)`
   width: auto;
   flex-wrap: nowrap;
@@ -83,6 +89,26 @@ export const Typography = styled(MuiTypography)`
   }
 `;
 
+export const DetailedTypography = styled(MuiTypography)`
+  @media (max-width: 768px) {
+    font-size: 2.5rem !important;
+  }
+
+  @media (max-width: 375px) {
+    font-size: 2rem !important;
+  }
+`;
+
+export const MainDetailedTypography = styled(MuiTypography)`
+  @media (max-width: 768px) {
+    padding-top: 2rem;
+    font-size: 3.5rem !important;
+  }
+
+  @media (max-width: 375px) {
+    font-size: 3rem !important;
+  }
+`;
 export const CustomLink = styled(Link)`
   width: 49%;
   text-decoration: none;
@@ -94,7 +120,7 @@ export const CustomLink = styled(Link)`
     transition: all 0.5s ease-in-out;
   }
 
-  @media (max-width: 910px) {
+  @media (max-width: 930px) {
     width: 48%;
   }
 
