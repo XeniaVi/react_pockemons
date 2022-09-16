@@ -36,7 +36,6 @@ const pokemonsSlice = createSlice({
       };
     },
     setItems: (state, action) => {
-      console.log("setItems");
       const { data, offset } = action.payload;
 
       return {
@@ -49,9 +48,7 @@ const pokemonsSlice = createSlice({
       };
     },
     setItemsDisplay: (state, action) => {
-      console.log("setItemsDisplay");
       const { offsetState, limitState } = action.payload;
-      console.log(offsetState, limitState);
       return {
         ...state,
         offsetState,
@@ -64,7 +61,6 @@ const pokemonsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
-      console.log(action.payload);
       return {
         ...state,
         items: action.payload.results,

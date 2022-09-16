@@ -2,7 +2,6 @@ import axios from "axios";
 import { config } from "../config";
 
 export const getPokemons = async ({ endpoint, limit, offset }) => {
-  console.log(`${config.APP_URL}${endpoint}?limit=${limit}&offset=${offset}`);
   return await axios.get(
     `${config.APP_URL}${endpoint}?limit=${limit}&offset=${offset}`
   );

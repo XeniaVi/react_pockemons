@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 import {
   actionGetPokemonsAccordingTypes,
   actionGetPokemonsType,
-} from '../asyncActions';
+} from "../asyncActions";
 
 const typesSlice = createSlice({
-  name: 'typesSlice',
+  name: "typesSlice",
   initialState: {
     types: [],
     selectedTypes: [],
@@ -51,8 +51,6 @@ const typesSlice = createSlice({
       (state, action) => {
         const { data, type } = action.payload;
         const newItems = data.pokemon.map((item) => item.pokemon);
-
-        console.log(data);
 
         return {
           ...state,

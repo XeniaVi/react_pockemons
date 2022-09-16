@@ -94,7 +94,7 @@ export const CustomLink = styled(Link)`
     transition: all 0.5s ease-in-out;
   }
 
-  @media (max-width: 910px) {
+  @media (max-width: 930px) {
     width: 48%;
   }
 

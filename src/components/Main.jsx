@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +27,13 @@ import {
   setItemsTypes,
   setSelectedTypes,
 } from "../store/slices/typesSlice";
+import {
+  MenuItemPropsFilter,
+  MenuPropsFilter,
+  MenuPropsLimit,
+  stylesInput,
+  stylesSelectForm,
+} from "../styles";
 import { FlexContainer } from "../styles/component";
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
@@ -80,19 +86,11 @@ export const Main = () => {
   };
 
   const getSearchItems = (value, offset) => {
-    console.log("getSearchItems");
     const newItems = selectedTypes.length
       ? itemsAllTypes.filter((item) => item.name.includes(value))
       : itemsAll.filter((item) => item.name.includes(value));
 
     const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
-
-    console.log(items);
-    console.log(itemsAllTypes);
-    console.log(newItems);
-    console.log(selectedTypes);
-    console.log(value);
-    console.log(offset);
 
     value
       ? dispatch(setItems({ data: newItems, offset }))
@@ -131,8 +129,6 @@ export const Main = () => {
   };
 
   const getStartFilterTypes = (filters) => {
-    console.log("getStartFilterTypes");
-    console.log(filters, selectedTypes);
     if (filters.length !== selectedTypes.length) {
       for (let i = 0; i < filters.length; i++) {
         const item = types.filter((item) => filters[i] === item.name)[0];
@@ -153,8 +149,6 @@ export const Main = () => {
           newItems.push(itemsTypes[i].items[j]);
         }
       }
-
-      console.log(newItems);
 
       dispatch(setItems({ data: newItems, offset }));
       dispatch(setItemsAllTypes(newItems));
@@ -180,10 +174,7 @@ export const Main = () => {
   }, [limitState, offsetState, items]);
 
   useEffect(() => {
-    console.log("1 itemsAll.length, count", itemsAll.length, count);
-    console.log("isLoading ", isLoading);
     if (itemsAll.length) {
-      console.log("2 itemsAll.length, count", itemsAll.length, count);
       setDisabled(itemsAll.length !== count);
       setIsLoading(itemsAll.length !== count);
 
@@ -207,12 +198,6 @@ export const Main = () => {
   return (
     <>
       <FlexContainer>
-        <Pagination
-          onChange={handleChangePagination}
-          page={currentPage}
-          count={countOfPages}
-          disabled={disabled}
-        />
         <SelectForm
           handleChange={handleChangeSelect}
           list={limits}
@@ -220,12 +205,15 @@ export const Main = () => {
           width="230px"
           label="Items to show per page"
           disabled={disabled}
+          MenuProps={MenuPropsLimit}
+          styles={stylesSelectForm}
         />
         <InputSearch
           label="Search by name"
           value={search ? search : searchValue}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
+          styles={stylesInput}
         />
         <SelectForm
           handleChange={handleChangeSelectFilter}
@@ -235,6 +223,17 @@ export const Main = () => {
           label="Filter by types"
           disabled={disabled}
           multiple={true}
+          MenuProps={MenuPropsFilter}
+          MenuItemProps={MenuItemPropsFilter}
+          styles={stylesSelectForm}
+        />
+        <Pagination
+          onChange={handleChangePagination}
+          page={currentPage}
+          count={countOfPages}
+          disabled={disabled}
+          sx={{ width: "100%" }}
+          size="small"
         />
       </FlexContainer>
       {!isLoading ? <PokemonList items={itemsDisplay} /> : <CircularProgress />}

@@ -11,9 +11,12 @@ export const SelectForm = ({
   value,
   disabled,
   multiple,
+  MenuProps,
+  MenuItemProps,
+  styles,
 }) => {
   return (
-    <FormControl sx={{ width }}>
+    <FormControl sx={styles ? styles(width) : {}}>
       <InputLabel>{label}</InputLabel>
       <Select
         value={value}
@@ -21,34 +24,13 @@ export const SelectForm = ({
         onChange={handleChange}
         disabled={disabled}
         multiple={multiple}
-        MenuProps={{
-          PaperProps: {
-            sx: {
-              width,
-              p: 1,
-              "& .MuiList-root": {
-                width: "100%",
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-                gap: "0.5rem",
-              },
-            },
-          },
-        }}
+        MenuProps={MenuProps}
       >
         {list.map((item) => (
           <MenuItem
             key={item.name}
             value={item.name}
-            sx={{
-              width: "45%",
-              background: colors[item.name],
-              "&:hover": {
-                background: colors[item.name],
-                opacity: 0.75,
-              },
-            }}
+            sx={MenuItemProps ? MenuItemProps(colors[item.name]) : {}}
           >
             {item.name}
           </MenuItem>
@@ -69,4 +51,7 @@ SelectForm.propTypes = {
     PropTypes.array.isRequired,
   ]),
   disabled: PropTypes.bool.isRequired,
+  MenuProps: PropTypes.object,
+  MenuItemProps: PropTypes.func,
+  styles: PropTypes.object,
 };

@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
 
-export const InputSearch = ({ label, value, handleChange, disabled }) => {
+export const InputSearch = ({
+  label,
+  value,
+  handleChange,
+  disabled,
+  styles,
+}) => {
   return (
     <TextField
       variant="standard"
@@ -10,6 +16,7 @@ export const InputSearch = ({ label, value, handleChange, disabled }) => {
       onChange={handleChange}
       value={value}
       disabled={disabled}
+      sx={styles}
     />
   );
 };
@@ -19,4 +26,5 @@ InputSearch.propTypes = {
   value: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  styles: PropTypes.object,
 };
