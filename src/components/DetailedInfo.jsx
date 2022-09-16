@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colors } from "../constants";
-import { Button, CircularProgress } from "@mui/material";
+import { Avatar, Button, CircularProgress } from "@mui/material";
 import {
   DetailedContainer,
   TypePokemon,
@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { config } from "../config";
 import { actionGetDetailedInfo } from "../store/asyncActions";
 import { getStatsColor } from "../helpers";
-import { stylesBtn } from "../styles";
+import { sizeDefaultAvatar, stylesBtn } from "../styles";
 
 export const DetailedInfo = () => {
   const dispatch = useDispatch();
@@ -106,9 +106,13 @@ export const DetailedInfo = () => {
             </FlexInnerDetailedInfo>
 
             <ImageContainer bgcolor={colors[item.types[0].type.name]}>
-              <SmallImage
-                src={item.sprites.other.home.front_default}
-              ></SmallImage>
+              {item.sprites.other.home.front_default ? (
+                <SmallImage
+                  src={item.sprites.other.home.front_default}
+                ></SmallImage>
+              ) : (
+                <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+              )}
             </ImageContainer>
           </FlexContainer>
 

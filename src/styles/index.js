@@ -64,7 +64,6 @@ export const stylesSelectForm = (props) => {
       color: "#46748e",
     },
     "& .MuiInputBase-root": {
-      pl: 6,
       "& .MuiOutlinedInput-notchedOutline": {
         borderColor: "#46748e",
       },
@@ -78,7 +77,7 @@ export const stylesInput = {
     color: "#46748e",
   },
   "& .MuiInputBase-root": {
-    pl: 6,
+    p: 1,
     "&::after": {
       borderColor: "#46748e",
     },
@@ -87,3 +86,5 @@ export const stylesInput = {
     },
   },
 };
+
+export const sizeDefaultAvatar = { width: "156px", height: "156px" };
