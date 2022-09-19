@@ -13,7 +13,7 @@ export const stylesBtn = (theme) => ({
 });
 
 export const stylesCard = {
-  width: "calc(48% - 2rem)",
+  width: "calc(100% - 2rem)",
 };
 
 export const MenuPropsFilter = {
