@@ -155,7 +155,7 @@ export const List = styled.ul`
   padding-left: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 189px;
+  grid-auto-rows: minmax(189px, auto);
   gap: 1rem;
   list-style: none;
 
