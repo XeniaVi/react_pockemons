@@ -30,7 +30,17 @@ export const PokemonCard = React.memo(({ item }) => {
 
   return currentItem ? (
     <CustomLink to={`/pokemon/${currentItem.id}`}>
-      <Card bgcolor={colors[currentItem.types[0].type.name]}>
+      <Card
+        sx={
+          currentItem.types.length === 1
+            ? { background: colors[currentItem.types[0].type.name] }
+            : {
+                background: `linear-gradient(135deg, ${
+                  colors[currentItem.types[0].type.name]
+                } 0%, ${colors[currentItem.types[1].type.name]} 100%)`,
+              }
+        }
+      >
         <Typography
           component="h5"
           variant="h5"
