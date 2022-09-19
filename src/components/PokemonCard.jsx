@@ -4,10 +4,10 @@ import { Typography, CircularProgress, Avatar } from "@mui/material";
 import {
   Card,
   CardImage,
+  CardImageInner,
   CircleProgressContainer,
   CustomLink,
 } from "../styles/component";
-import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
 import { sizeDefaultAvatar, stylesCard } from "../styles";
@@ -30,21 +30,37 @@ export const PokemonCard = React.memo(({ item }) => {
 
   return currentItem ? (
     <CustomLink to={`/pokemon/${currentItem.id}`}>
-      <Card bgcolor={colors[currentItem.types[0].type.name]}>
+      <Card
+        sx={(theme) => ({
+          background:
+            currentItem.types.length === 1
+              ? theme.palette.types[currentItem.types[0].type.name]
+              : `linear-gradient(135deg, ${
+                  theme.palette.types[currentItem.types[0].type.name]
+                } 0%, ${
+                  theme.palette.types[currentItem.types[1].type.name]
+                } 100%)`,
+        })}
+      >
         <Typography
           component="h5"
           variant="h5"
-          sx={{ borderBottom: "3px solid #46748E" }}
+          sx={(theme) => ({
+            borderBottom: `3px solid  ${theme.palette.secondary.main}`,
+          })}
         >
           {item.name.toUpperCase()}
         </Typography>
+
         {currentItem.sprites.other.home.front_default ? (
           <CardImage
             src={currentItem.sprites.other.home.front_default}
             alt={item.name}
           />
         ) : (
-          <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+          <CardImageInner>
+            <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+          </CardImageInner>
         )}
       </Card>
     </CustomLink>
@@ -53,10 +69,13 @@ export const PokemonCard = React.memo(({ item }) => {
       <Typography
         component="h5"
         variant="h5"
-        sx={{ borderBottom: "3px solid #46748E" }}
+        sx={(theme) => ({
+          borderBottom: `3px solid  ${theme.palette.secondary.main}`,
+        })}
       >
         {item.name.toUpperCase()}
       </Typography>
+
       <CircleProgressContainer>
         <CircularProgress />
       </CircleProgressContainer>

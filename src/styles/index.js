@@ -1,16 +1,16 @@
-export const stylesBtn = {
+export const stylesBtn = (theme) => ({
   position: "absolute",
   top: "1rem",
   left: "1rem",
-  color: "#08212c",
-  borderColor: "#08212c",
+  color: theme.palette.primary.main,
+  borderColor: theme.palette.primary.main,
   transition: "all 0.5s ease-in-out",
 
   "&:hover": {
-    borderColor: "#08212c",
+    borderColor: theme.palette.primary.main,
     transition: "all 0.5s ease-in-out",
   },
-};
+});
 
 export const stylesCard = {
   width: "calc(48% - 2rem)",
@@ -28,9 +28,6 @@ export const MenuPropsFilter = {
         justifyContent: "space-around",
         gap: "0.5rem",
       },
-      "& Mui-Focused": {
-        background: "red",
-      },
     },
   },
 };
@@ -40,51 +37,46 @@ export const MenuPropsLimit = {
     sx: {
       width: "230px",
       p: 1,
-      borderColor: "red",
     },
   },
 };
 
-export const MenuItemPropsFilter = (props) => {
-  return {
-    width: "45%",
+export const MenuItemPropsFilter = (props) => ({
+  width: "45%",
+  background: props,
+  "&:hover": {
     background: props,
-    "&:hover": {
-      background: props,
-      opacity: 0.75,
-    },
-  };
-};
+    opacity: 0.75,
+  },
+});
 
-export const stylesSelectForm = (props) => {
-  return {
-    width: props,
-    borderColor: "#46748e",
-    "& label.Mui-focused": {
-      color: "#46748e",
-    },
-    "& .MuiInputBase-root": {
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#46748e",
-      },
-    },
-  };
-};
-
-export const stylesInput = {
-  borderColor: "#46748e",
+export const stylesSelectForm = (props, theme) => ({
+  width: props,
+  borderColor: theme.palette.secondary.main,
   "& label.Mui-focused": {
-    color: "#46748e",
+    color: theme.palette.secondary.main,
+  },
+  "& .MuiInputBase-root": {
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme.palette.secondary.main,
+    },
+  },
+});
+
+export const stylesInput = (theme) => ({
+  borderColor: theme.palette.secondary.main,
+  "& label.Mui-focused": {
+    color: theme.palette.secondary.main,
   },
   "& .MuiInputBase-root": {
     p: 1,
     "&::after": {
-      borderColor: "#46748e",
+      borderColor: theme.palette.secondary.main,
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "#46748e",
+      borderColor: theme.palette.secondary.main,
     },
   },
-};
+});
 
-export const sizeDefaultAvatar = { width: "156px", height: "156px" };
+export const sizeDefaultAvatar = { width: "100%", height: "100%" };

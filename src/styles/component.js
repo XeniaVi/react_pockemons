@@ -2,25 +2,50 @@ import styled from "styled-components";
 import {
   Box,
   Card as MuiCard,
+  createTheme,
   Typography as MuiTypography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { styled as muiStyled } from "@mui/system";
 
-export const Container = styled(Box)`
-  width: 100%;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #cce1eb;
-  box-sizing: border-box;
+export const customTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#08212c",
+      backgroundColor: "#cce1eb",
+    },
+    secondary: {
+      main: "#46748e",
+    },
+    types: {
+      normal: "#A8A77A",
+      fire: "#EE8130",
+      water: "#6390F0",
+      electric: "#F7D02C",
+      grass: "#7AC74C",
+      ice: "#96D9D6",
+      fighting: "#C22E28",
+      poison: "#A33EA1",
+      ground: "#E2BF65",
+      flying: "#A98FF3",
+      psychic: "#F95587",
+      bug: "#A6B91A",
+      rock: "#B6A136",
+      ghost: "#735797",
+      dragon: "#6F35FC",
+      dark: "#705746",
+      steel: "#B7B7CE",
+      fairy: "#D685AD",
+    },
+  },
+});
 
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-
-  @media (max-width: 375px) {
-    padding: 0.5rem;
-  }
-`;
+export const Container = muiStyled(Box)(({ theme }) => ({
+  width: "100%",
+  minHeight: "100vh",
+  backgroundColor: theme.palette.primary.backgroundColor,
+  boxSizing: "border-box",
+}));
 
 export const FlexContainer = styled(Box)`
   width: 100%;
@@ -48,20 +73,18 @@ export const FlexInnerDetailedInfo = styled(FlexContainer)`
   }
 `;
 
-export const DetailedContainer = styled(Box)`
-  position: relative;
-  border: 1px solid #46748e;
-  padding: 2rem;
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+export const DetailedContainer = muiStyled(Box)(({ theme }) => ({
+  position: "relative",
+  border: `1px solid ${theme.palette.secondary.main}`,
+  padding: "2rem",
+  marginTop: "1.5rem",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "2rem",
 
-  @media (max-width: 768px) {
-    padding: 1rem 0.5rem;
-  }
-`;
+  [theme.breakpoints.down("md")]: { padding: "1rem 0.5rem" },
+}));
 
 export const FlexInnerCard = styled(MuiCard)`
   width: 40%;
@@ -79,15 +102,12 @@ export const FlexInnerCard = styled(MuiCard)`
   }
 `;
 
-export const Typography = styled(MuiTypography)`
-  @media (max-width: 768px) {
-    font-size: 4rem !important;
-  }
+export const Typography = muiStyled(MuiTypography)(({ theme }) => ({
+  color: theme.palette.primary.main,
 
-  @media (max-width: 375px) {
-    font-size: 3.5rem !important;
-  }
-`;
+  [theme.breakpoints.down("md")]: { fontSize: "4rem !important" },
+  [theme.breakpoints.down("sm")]: { fontSize: "3.5rem !important" },
+}));
 
 export const DetailedTypography = styled(MuiTypography)`
   @media (max-width: 768px) {
@@ -99,18 +119,17 @@ export const DetailedTypography = styled(MuiTypography)`
   }
 `;
 
-export const MainDetailedTypography = styled(MuiTypography)`
-  @media (max-width: 768px) {
-    padding-top: 2rem;
-    font-size: 3.5rem !important;
-  }
+export const MainDetailedTypography = muiStyled(MuiTypography)(({ theme }) => ({
+  color: theme.palette.primary.main,
 
-  @media (max-width: 375px) {
-    font-size: 3rem !important;
-  }
-`;
+  [theme.breakpoints.down("md")]: {
+    paddingTop: "2rem",
+    fontSize: "3rem !important",
+  },
+  [theme.breakpoints.down("sm")]: { fontSize: "2.5rem !important" },
+}));
+
 export const CustomLink = styled(Link)`
-  width: 49%;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
 
@@ -120,12 +139,8 @@ export const CustomLink = styled(Link)`
     transition: all 0.5s ease-in-out;
   }
 
-  @media (max-width: 930px) {
-    width: 48%;
-  }
-
   @media (max-width: 768px) {
-    width: 100%;
+    min-width: 270px;
   }
 `;
 
@@ -138,15 +153,14 @@ export const CircleProgressContainer = styled.div`
 
 export const List = styled.ul`
   padding-left: 0;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 189px;
   gap: 1rem;
   list-style: none;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.5rem;
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -157,7 +171,7 @@ export const Card = styled(MuiCard)`
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  min-height: 189px;
+  height: calc(100% - 2rem);
   cursor: pointer;
   background-color: ${(props) => props.bgcolor} !important;
   overflow: visible !important;
@@ -167,16 +181,23 @@ export const CardImage = styled.img`
   width: 30%;
 `;
 
-export const ImageContainer = styled(Box)`
+export const CardImageInner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 10rem;
-  padding: 1rem;
-  border-radius: 50%;
-  border: 2px solid #46748e;
-  background-color: ${(props) => props.bgcolor || "transparent"};
+  width: 30%;
 `;
+
+export const ImageContainer = muiStyled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "10rem",
+  padding: "1rem",
+  borderRadius: "50%",
+  border: `2px solid ${theme.palette.secondary.main}`,
+  backgroundColor: `${(props) => props.bgcolor || "transparent"}`,
+}));
 
 export const SmallImage = styled.img`
   width: 100%;
@@ -196,26 +217,27 @@ export const StatsItem = styled.li`
   padding: 0.5rem;
 `;
 
-export const StatsItemText = styled.span`
-  text-transform: uppercase;
-  font-size: 1.2rem;
-  font-weight: 500;
-`;
+export const StatsItemText = muiStyled("span")(({ theme }) => ({
+  color: theme.palette.primary.main,
+  textTransform: "uppercase",
+  fontSize: "1.2rem",
+  fontWeight: 500,
+}));
 
 export const StatsItemNumber = styled.span`
   font-size: ${(props) => props.fs || "1.2rem"};
-  color: ${(props) => props.color || "#46748e"};
+  color: ${(props) => props.color};
   font-weight: 700;
 `;
 
-export const TypePokemon = styled(Box)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 5rem;
-  height: 5rem;
-  color: #08212c;
-  text-transform: uppercase;
-  font-weight: 700;
-  background-color: ${(props) => props.bgcolor};
-`;
+export const TypePokemon = muiStyled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "5rem",
+  height: "5rem",
+  color: theme.palette.primary.main,
+  textTransform: "uppercase",
+  fontWeight: 700,
+  backgroundColor: `${(props) => props.bgcolor}`,
+}));
