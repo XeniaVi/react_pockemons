@@ -252,7 +252,7 @@ export const Main = () => {
           styles={stylesSelectForm}
         />
 
-        {countOfPages > 1 && (
+        {countOfPages > 1 && !isLoading && (
           <Pagination
             onChange={handleChangePagination}
             page={currentPage}
