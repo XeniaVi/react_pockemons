@@ -7,7 +7,6 @@ import {
   CircleProgressContainer,
   CustomLink,
 } from "../styles/component";
-import { colors } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
 import { sizeDefaultAvatar, stylesCard } from "../styles";
@@ -31,20 +30,23 @@ export const PokemonCard = React.memo(({ item }) => {
   return currentItem ? (
     <CustomLink to={`/pokemon/${currentItem.id}`}>
       <Card
-        sx={
-          currentItem.types.length === 1
-            ? { background: colors[currentItem.types[0].type.name] }
-            : {
-                background: `linear-gradient(135deg, ${
-                  colors[currentItem.types[0].type.name]
-                } 0%, ${colors[currentItem.types[1].type.name]} 100%)`,
-              }
-        }
+        sx={(theme) => ({
+          background:
+            currentItem.types.length === 1
+              ? theme.palette.types[currentItem.types[0].type.name]
+              : `linear-gradient(135deg, ${
+                  theme.palette.types[currentItem.types[0].type.name]
+                } 0%, ${
+                  theme.palette.types[currentItem.types[1].type.name]
+                } 100%)`,
+        })}
       >
         <Typography
           component="h5"
           variant="h5"
-          sx={{ borderBottom: "3px solid #46748E" }}
+          sx={(theme) => ({
+            borderBottom: `3px solid  ${theme.palette.secondary.main}`,
+          })}
         >
           {item.name.toUpperCase()}
         </Typography>
@@ -63,7 +65,9 @@ export const PokemonCard = React.memo(({ item }) => {
       <Typography
         component="h5"
         variant="h5"
-        sx={{ borderBottom: "3px solid #46748E" }}
+        sx={(theme) => ({
+          borderBottom: `3px solid  ${theme.palette.secondary.main}`,
+        })}
       >
         {item.name.toUpperCase()}
       </Typography>

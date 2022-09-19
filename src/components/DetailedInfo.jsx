@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { colors } from "../constants";
 import { Avatar, Button, CircularProgress } from "@mui/material";
 import {
   DetailedContainer,
@@ -61,7 +60,9 @@ export const DetailedInfo = () => {
                 {item.types.map((item) => (
                   <TypePokemon
                     key={item.type.name}
-                    bgcolor={colors[item.type.name]}
+                    sx={(theme) => ({
+                      background: theme.palette.types[item.type.name],
+                    })}
                   >
                     {item.type.name}
                   </TypePokemon>
@@ -71,27 +72,34 @@ export const DetailedInfo = () => {
 
             <FlexInnerDetailedInfo>
               <FlexContainer>
-                <DetailedTypography component="h4">Height:</DetailedTypography>
-                <StatsItemNumber
-                  fs="2rem"
-                  color={colors[item.types[0].type.name]}
+                <DetailedTypography
+                  component="h4"
+                  sx={{ color: "primary.main" }}
                 >
+                  Height:
+                </DetailedTypography>
+                <StatsItemNumber fs="2rem" sx={{ color: "secondary.main" }}>
                   {item.height}
                 </StatsItemNumber>
               </FlexContainer>
 
               <FlexContainer>
-                <DetailedTypography component="h4">Weight:</DetailedTypography>
-                <StatsItemNumber
-                  fs="2rem"
-                  color={colors[item.types[0].type.name]}
+                <DetailedTypography
+                  component="h4"
+                  sx={{ color: "primary.main" }}
                 >
+                  Weight:
+                </DetailedTypography>
+                <StatsItemNumber fs="2rem" sx={{ color: "secondary.main" }}>
                   {item.weight}
                 </StatsItemNumber>
               </FlexContainer>
 
               <FlexContainer>
-                <DetailedTypography component="h4">
+                <DetailedTypography
+                  component="h4"
+                  sx={{ color: "primary.main" }}
+                >
                   Abilities:
                 </DetailedTypography>
 
@@ -105,7 +113,18 @@ export const DetailedInfo = () => {
               </FlexContainer>
             </FlexInnerDetailedInfo>
 
-            <ImageContainer bgcolor={colors[item.types[0].type.name]}>
+            <ImageContainer
+              sx={(theme) => ({
+                background:
+                  item.types.length === 1
+                    ? theme.palette.types[item.types[0].type.name]
+                    : `linear-gradient(-135deg, ${
+                        theme.palette.types[item.types[0].type.name]
+                      } 0%, ${
+                        theme.palette.types[item.types[1].type.name]
+                      } 100%)`,
+              })}
+            >
               {item.sprites.other.home.front_default ? (
                 <SmallImage
                   src={item.sprites.other.home.front_default}
