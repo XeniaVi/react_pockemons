@@ -4,6 +4,7 @@ import { Typography, CircularProgress, Avatar } from "@mui/material";
 import {
   Card,
   CardImage,
+  CardImageInner,
   CircleProgressContainer,
   CustomLink,
 } from "../styles/component";
@@ -57,7 +58,9 @@ export const PokemonCard = React.memo(({ item }) => {
             alt={item.name}
           />
         ) : (
-          <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+          <CardImageInner>
+            <Avatar alt="Pokemon" sx={sizeDefaultAvatar} />
+          </CardImageInner>
         )}
       </Card>
     </CustomLink>

@@ -43,12 +43,8 @@ export const customTheme = createTheme({
 export const Container = muiStyled(Box)(({ theme }) => ({
   width: "100%",
   minHeight: "100vh",
-  padding: "2rem",
   backgroundColor: theme.palette.primary.backgroundColor,
   boxSizing: "border-box",
-
-  [theme.breakpoints.down("md")]: { padding: "1rem" },
-  [theme.breakpoints.down("sm")]: { padding: "0.5rem" },
 }));
 
 export const FlexContainer = styled(Box)`
@@ -142,6 +138,10 @@ export const CustomLink = styled(Link)`
     transform: scale(1.05);
     transition: all 0.5s ease-in-out;
   }
+
+  @media (max-width: 768px) {
+    min-width: 270px;
+  }
 `;
 
 export const CircleProgressContainer = styled.div`
@@ -178,6 +178,13 @@ export const Card = styled(MuiCard)`
 `;
 
 export const CardImage = styled.img`
+  width: 30%;
+`;
+
+export const CardImageInner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 30%;
 `;
 

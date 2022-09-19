@@ -23,5 +23,5 @@ InputSearch.propTypes = {
   value: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  styles: PropTypes.object,
+  styles: PropTypes.func,
 };
