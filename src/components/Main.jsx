@@ -110,6 +110,8 @@ export const Main = () => {
   };
 
   const handleChangeSelectFilter = (event) => {
+    setIsLoading(true);
+    setDisabled(true);
     const type = event.target.value[event.target.value.length - 1];
 
     if (event.target.value.length > selectedTypes.length) {
@@ -193,6 +195,10 @@ export const Main = () => {
 
   useEffect(() => {
     setItemsByTypes();
+    if (itemsAll.length) {
+      setDisabled(itemsAll.length !== count);
+      setIsLoading(itemsAll.length !== count);
+    }
   }, [itemsTypes]);
 
   useEffect(() => {

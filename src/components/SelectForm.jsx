@@ -14,7 +14,6 @@ export const SelectForm = ({
   MenuItemProps,
   styles,
 }) => {
-  console.log(MenuItemProps);
   return (
     <FormControl sx={(theme) => (styles ? styles(width, theme) : {})}>
       <InputLabel>{label}</InputLabel>
