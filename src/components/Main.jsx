@@ -129,7 +129,15 @@ export const Main = () => {
       dispatch(reset());
       dispatch(setItems({ data: itemsAll, offset: 0 }));
     } else {
-      const newItems = itemsTypes.filter((item) => item.type === type);
+      let removeType = "";
+
+      for (let i = 0; i < itemsTypes.length; i++) {
+        if (!event.target.value.includes(itemsTypes[i].type))
+          removeType = itemsTypes[i].type;
+      }
+
+      const newItems = itemsTypes.filter((item) => item.type !== removeType);
+
       dispatch(setItemsTypes(newItems));
       dispatch(setCurrentPage(1));
       setQuery({ offset: 0 });
