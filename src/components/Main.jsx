@@ -1,4 +1,3 @@
-import { CircularProgress, Pagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,6 +33,7 @@ import {
   stylesInput,
   stylesSelectForm,
 } from "../styles";
+import { CircularProgress, Pagination } from "@mui/material";
 import {
   FilterContainer,
   FlexContainer,
@@ -42,6 +42,7 @@ import {
 import { InputSearch } from "./InputSearch";
 import { PokemonList } from "./PokemonList";
 import { SelectForm } from "./SelectForm";
+import { useDebounce } from "../hooks/useDebounce";
 
 const FiltersParam = withDefault(ArrayParam, []);
 
@@ -72,11 +73,13 @@ export const Main = () => {
     (state) => state.types
   );
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState(search ? search : "");
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(
     Boolean(offset || limit || filters || search)
   );
+
+  const debouncedSearchValue = useDebounce(searchValue, 1000);
 
   const handleChangePagination = (_, value) => {
     dispatch(setCurrentPage(value));
@@ -104,9 +107,13 @@ export const Main = () => {
   };
 
   const handleChangeSearchFilter = (event) => {
+    setIsLoading(true);
     setSearchValue(event.target.value);
-    setQuery({ search: event.target.value });
-    getSearchItems(event.target.value, 0);
+  };
+
+  const getDataFromSearchFilter = (value) => {
+    setQuery({ search: value });
+    getSearchItems(value, 0);
   };
 
   const handleChangeSelectFilter = (event) => {
@@ -195,15 +202,22 @@ export const Main = () => {
 
   useEffect(() => {
     setItemsByTypes();
-    if (itemsAll.length) {
-      setDisabled(itemsAll.length !== count);
-      setIsLoading(itemsAll.length !== count);
-    }
   }, [itemsTypes]);
 
   useEffect(() => {
     itemsAll.length >= count && search && getSearchItems(search, offset);
   }, [itemsAllTypes]);
+
+  useEffect(() => {
+    if (itemsAll.length) {
+      setDisabled(itemsAll.length !== count);
+      setIsLoading(itemsAll.length !== count);
+    }
+  }, [itemsDisplay, itemsTypes]);
+
+  useEffect(() => {
+    getDataFromSearchFilter(debouncedSearchValue);
+  }, [debouncedSearchValue]);
 
   return (
     <>
@@ -220,7 +234,7 @@ export const Main = () => {
         />
         <InputSearch
           label="Search by name"
-          value={search ? search : searchValue}
+          value={searchValue}
           handleChange={handleChangeSearchFilter}
           disabled={disabled}
           styles={stylesInput}
