@@ -110,7 +110,6 @@ export const MainDetailedTypography = styled(MuiTypography)`
   }
 `;
 export const CustomLink = styled(Link)`
-  width: 49%;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
 
@@ -118,14 +117,6 @@ export const CustomLink = styled(Link)`
     opacity: 0.7;
     transform: scale(1.05);
     transition: all 0.5s ease-in-out;
-  }
-
-  @media (max-width: 930px) {
-    width: 48%;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
   }
 `;
 
@@ -138,15 +129,14 @@ export const CircleProgressContainer = styled.div`
 
 export const List = styled.ul`
   padding-left: 0;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 189px;
   gap: 1rem;
   list-style: none;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.5rem;
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -157,7 +147,7 @@ export const Card = styled(MuiCard)`
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  min-height: 189px;
+  height: calc(100% - 2rem);
   cursor: pointer;
   background-color: ${(props) => props.bgcolor} !important;
   overflow: visible !important;
