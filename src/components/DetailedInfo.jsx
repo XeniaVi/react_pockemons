@@ -51,11 +51,13 @@ export const DetailedInfo = () => {
           >
             Back
           </Button>
+
           <FlexContainer justifyContent="space-around">
             <FlexInnerDetailedInfo>
               <MainDetailedTypography component="h2">
                 {item.name.toUpperCase()}
               </MainDetailedTypography>
+
               <FlexInnerDetailedInfo>
                 {item.types.map((item) => (
                   <TypePokemon
@@ -78,6 +80,7 @@ export const DetailedInfo = () => {
                 >
                   Height:
                 </DetailedTypography>
+
                 <StatsItemNumber fs="2rem" sx={{ color: "secondary.main" }}>
                   {item.height}
                 </StatsItemNumber>
@@ -90,6 +93,7 @@ export const DetailedInfo = () => {
                 >
                   Weight:
                 </DetailedTypography>
+
                 <StatsItemNumber fs="2rem" sx={{ color: "secondary.main" }}>
                   {item.weight}
                 </StatsItemNumber>

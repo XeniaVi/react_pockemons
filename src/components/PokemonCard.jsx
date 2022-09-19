@@ -50,6 +50,7 @@ export const PokemonCard = React.memo(({ item }) => {
         >
           {item.name.toUpperCase()}
         </Typography>
+
         {currentItem.sprites.other.home.front_default ? (
           <CardImage
             src={currentItem.sprites.other.home.front_default}
@@ -71,6 +72,7 @@ export const PokemonCard = React.memo(({ item }) => {
       >
         {item.name.toUpperCase()}
       </Typography>
+
       <CircleProgressContainer>
         <CircularProgress />
       </CircleProgressContainer>

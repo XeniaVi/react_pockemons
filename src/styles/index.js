@@ -41,31 +41,27 @@ export const MenuPropsLimit = {
   },
 };
 
-export const MenuItemPropsFilter = (props) => {
-  return {
-    width: "45%",
+export const MenuItemPropsFilter = (props) => ({
+  width: "45%",
+  background: props,
+  "&:hover": {
     background: props,
-    "&:hover": {
-      background: props,
-      opacity: 0.75,
-    },
-  };
-};
+    opacity: 0.75,
+  },
+});
 
-export const stylesSelectForm = (props, theme) => {
-  return {
-    width: props,
-    borderColor: theme.palette.secondary.main,
-    "& label.Mui-focused": {
-      color: theme.palette.secondary.main,
+export const stylesSelectForm = (props, theme) => ({
+  width: props,
+  borderColor: theme.palette.secondary.main,
+  "& label.Mui-focused": {
+    color: theme.palette.secondary.main,
+  },
+  "& .MuiInputBase-root": {
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: theme.palette.secondary.main,
     },
-    "& .MuiInputBase-root": {
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: theme.palette.secondary.main,
-      },
-    },
-  };
-};
+  },
+});
 
 export const stylesInput = (theme) => ({
   borderColor: theme.palette.secondary.main,

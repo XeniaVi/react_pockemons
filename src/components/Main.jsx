@@ -122,9 +122,7 @@ export const Main = () => {
     const type = event.target.value[event.target.value.length - 1];
 
     if (event.target.value.length > selectedTypes.length) {
-      const searchType = types.filter((item) => {
-        return item.name === type;
-      })[0];
+      const searchType = types.filter((item) => item.name === type)[0];
 
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
     } else if (!type) {
@@ -232,6 +230,7 @@ export const Main = () => {
           MenuProps={MenuPropsLimit}
           styles={stylesSelectForm}
         />
+
         <InputSearch
           label="Search by name"
           value={searchValue}
@@ -239,6 +238,7 @@ export const Main = () => {
           disabled={disabled}
           styles={stylesInput}
         />
+
         <SelectForm
           handleChange={handleChangeSelectFilter}
           list={types}
@@ -251,6 +251,7 @@ export const Main = () => {
           MenuItemProps={MenuItemPropsFilter}
           styles={stylesSelectForm}
         />
+
         {countOfPages > 1 && (
           <Pagination
             onChange={handleChangePagination}
