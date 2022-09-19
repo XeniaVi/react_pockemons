@@ -231,7 +231,7 @@ export const Main = () => {
           MenuItemProps={MenuItemPropsFilter}
           styles={stylesSelectForm}
         />
-        {itemsDisplay.length > 0 && (
+        {countOfPages > 1 && (
           <Pagination
             onChange={handleChangePagination}
             page={currentPage}
