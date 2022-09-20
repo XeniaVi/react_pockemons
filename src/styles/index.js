@@ -79,4 +79,4 @@ export const stylesInput = (theme) => ({
   },
 });
 
-export const sizeDefaultAvatar = { width: "100%", height: "100%" };
+export const sizeDefaultAvatar = { width: "156px", height: "156px" };

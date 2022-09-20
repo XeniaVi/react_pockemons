@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  Avatar,
   Box,
   Card as MuiCard,
   createTheme,
@@ -42,7 +43,8 @@ export const customTheme = createTheme({
 
 export const Container = muiStyled(Box)(({ theme }) => ({
   width: "100%",
-  minHeight: "100vh",
+  minHeight: "cacl(100vh - 1rem)",
+  paddingBottom: "1rem",
   backgroundColor: theme.palette.primary.backgroundColor,
   boxSizing: "border-box",
 }));
@@ -181,11 +183,20 @@ export const CardImage = styled.img`
   width: 30%;
 `;
 
-export const CardImageInner = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
+export const CardAvatar = styled(Avatar)`
+  width: 100px !important;
+  height: 100px !important;
+  max-width: 30%;
+
+  @media (max-width: 768px) {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  @media (max-width: 375px) {
+    width: 60px !important;
+    height: 60px !important;
+  }
 `;
 
 export const ImageContainer = muiStyled(Box)(({ theme }) => ({
