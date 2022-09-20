@@ -112,21 +112,25 @@ export const Typography = muiStyled(MuiTypography)(({ theme }) => ({
 }));
 
 export const DetailedTypography = styled(MuiTypography)`
+  font-size: 2rem !important;
+
   @media (max-width: 768px) {
-    font-size: 2.5rem !important;
+    font-size: 1.5rem !important;
   }
 
   @media (max-width: 375px) {
-    font-size: 2rem !important;
+    font-size: 1.25rem !important;
   }
 `;
 
 export const MainDetailedTypography = muiStyled(MuiTypography)(({ theme }) => ({
   color: theme.palette.primary.main,
+  fontSize: "2rem !important",
+  textAlign: "center",
 
   [theme.breakpoints.down("md")]: {
     paddingTop: "2rem",
-    fontSize: "3rem !important",
+    fontSize: "1.5rem !important",
   },
   [theme.breakpoints.down("sm")]: { fontSize: "2.5rem !important" },
 }));
@@ -215,7 +219,10 @@ export const SmallImage = styled.img`
 `;
 
 export const StatsList = styled.ul`
+  display: flex;
+  flex-direction: column;
   padding: 0.5rem;
+  gap: 1rem;
   list-style: none;
 
   @media (max-width: 768px) {
@@ -225,7 +232,8 @@ export const StatsList = styled.ul`
 `;
 
 export const StatsItem = styled.li`
-  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
 `;
 
 export const StatsItemText = muiStyled("span")(({ theme }) => ({
@@ -235,7 +243,7 @@ export const StatsItemText = muiStyled("span")(({ theme }) => ({
   fontWeight: 500,
 }));
 
-export const StatsItemNumber = styled.span`
+export const StatsItemNumber = styled.div`
   font-size: ${(props) => props.fs || "1.2rem"};
   color: ${(props) => props.color};
   font-weight: 700;

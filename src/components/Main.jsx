@@ -262,7 +262,7 @@ export const Main = () => {
 
         <FlexContainer>
           {isLoading ? (
-            <Skeleton variant="rectangular" width="260px" height="26px" />
+            <Skeleton variant="rounded" width="260px" height="26px" />
           ) : (
             countOfPages > 1 && (
               <Pagination
