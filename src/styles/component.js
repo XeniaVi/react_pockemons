@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  Avatar,
   Box,
   Card as MuiCard,
   createTheme,
@@ -42,7 +43,8 @@ export const customTheme = createTheme({
 
 export const Container = muiStyled(Box)(({ theme }) => ({
   width: "100%",
-  minHeight: "100vh",
+  minHeight: "calc(100vh - 1rem)",
+  paddingBottom: "1rem",
   backgroundColor: theme.palette.primary.backgroundColor,
   boxSizing: "border-box",
 }));
@@ -105,26 +107,30 @@ export const FlexInnerCard = styled(MuiCard)`
 export const Typography = muiStyled(MuiTypography)(({ theme }) => ({
   color: theme.palette.primary.main,
 
-  [theme.breakpoints.down("md")]: { fontSize: "4rem !important" },
-  [theme.breakpoints.down("sm")]: { fontSize: "3.5rem !important" },
+  [theme.breakpoints.down("md")]: { fontSize: "3rem !important" },
+  [theme.breakpoints.down("sm")]: { fontSize: "2.5rem !important" },
 }));
 
 export const DetailedTypography = styled(MuiTypography)`
+  font-size: 2rem !important;
+
   @media (max-width: 768px) {
-    font-size: 2.5rem !important;
+    font-size: 1.5rem !important;
   }
 
   @media (max-width: 375px) {
-    font-size: 2rem !important;
+    font-size: 1.25rem !important;
   }
 `;
 
 export const MainDetailedTypography = muiStyled(MuiTypography)(({ theme }) => ({
   color: theme.palette.primary.main,
+  fontSize: "2rem !important",
+  textAlign: "center",
 
   [theme.breakpoints.down("md")]: {
     paddingTop: "2rem",
-    fontSize: "3rem !important",
+    fontSize: "1.5rem !important",
   },
   [theme.breakpoints.down("sm")]: { fontSize: "2.5rem !important" },
 }));
@@ -181,11 +187,20 @@ export const CardImage = styled.img`
   width: 30%;
 `;
 
-export const CardImageInner = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
+export const CardAvatar = styled(Avatar)`
+  width: 100px !important;
+  height: 100px !important;
+  max-width: 30%;
+
+  @media (max-width: 768px) {
+    width: 90px !important;
+    height: 90px !important;
+  }
+
+  @media (max-width: 375px) {
+    width: 60px !important;
+    height: 60px !important;
+  }
 `;
 
 export const ImageContainer = muiStyled(Box)(({ theme }) => ({
@@ -204,7 +219,10 @@ export const SmallImage = styled.img`
 `;
 
 export const StatsList = styled.ul`
+  display: flex;
+  flex-direction: column;
   padding: 0.5rem;
+  gap: 1rem;
   list-style: none;
 
   @media (max-width: 768px) {
@@ -214,7 +232,8 @@ export const StatsList = styled.ul`
 `;
 
 export const StatsItem = styled.li`
-  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
 `;
 
 export const StatsItemText = muiStyled("span")(({ theme }) => ({
@@ -224,7 +243,7 @@ export const StatsItemText = muiStyled("span")(({ theme }) => ({
   fontWeight: 500,
 }));
 
-export const StatsItemNumber = styled.span`
+export const StatsItemNumber = styled.div`
   font-size: ${(props) => props.fs || "1.2rem"};
   color: ${(props) => props.color};
   font-weight: 700;

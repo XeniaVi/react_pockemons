@@ -33,7 +33,7 @@ import {
   stylesInput,
   stylesSelectForm,
 } from "../styles";
-import { CircularProgress, Pagination } from "@mui/material";
+import { Pagination, Skeleton } from "@mui/material";
 import {
   FilterContainer,
   FlexContainer,
@@ -260,30 +260,32 @@ export const Main = () => {
           styles={stylesSelectForm}
         />
 
-        {countOfPages > 1 && !isLoading && (
-          <Pagination
-            onChange={handleChangePagination}
-            page={currentPage}
-            count={countOfPages}
-            disabled={disabled}
-            sx={{ width: "100%" }}
-            size="small"
-          />
-        )}
+        <FlexContainer>
+          {isLoading ? (
+            <Skeleton variant="rounded" width="260px" height="26px" />
+          ) : (
+            countOfPages > 1 && (
+              <Pagination
+                onChange={handleChangePagination}
+                page={currentPage}
+                count={countOfPages}
+                disabled={disabled}
+                size="small"
+              />
+            )
+          )}
+        </FlexContainer>
       </FilterContainer>
-      {!isLoading ? (
-        itemsDisplay.length ? (
-          <PokemonList items={itemsDisplay} />
-        ) : (
-          <FlexContainer sx={{ height: "300px" }}>
-            <Typography variant="h3" component="span" sx={{ mt: 3 }}>
-              Not found items. Change filters
-            </Typography>
-          </FlexContainer>
-        )
-      ) : (
-        <FlexContainer sx={{ height: "300px" }}>
-          <CircularProgress />
+      <PokemonList
+        items={itemsDisplay}
+        isLoading={isLoading}
+        limit={limitState}
+      />
+      {!itemsDisplay.length && !isLoading && (
+        <FlexContainer justifyContent="center" sx={{ height: "300px" }}>
+          <Typography variant="h3" component="span" sx={{ mt: 3 }}>
+            Not found items. Change filters
+          </Typography>
         </FlexContainer>
       )}
     </>

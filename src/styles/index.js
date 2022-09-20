@@ -14,6 +14,7 @@ export const stylesBtn = (theme) => ({
 
 export const stylesCard = {
   width: "calc(100% - 2rem)",
+  background: "rgba(0,0,0,0.1)",
 };
 
 export const MenuPropsFilter = {
@@ -79,4 +80,4 @@ export const stylesInput = (theme) => ({
   },
 });
 
-export const sizeDefaultAvatar = { width: "100%", height: "100%" };
+export const sizeDefaultAvatar = { width: "156px", height: "156px" };
