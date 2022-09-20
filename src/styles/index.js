@@ -14,6 +14,7 @@ export const stylesBtn = (theme) => ({
 
 export const stylesCard = {
   width: "calc(100% - 2rem)",
+  background: "rgba(0,0,0,0.1)",
 };
 
 export const MenuPropsFilter = {

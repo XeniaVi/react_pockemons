@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Typography, CircularProgress } from "@mui/material";
-import {
-  Card,
-  CardAvatar,
-  CardImage,
-  CircleProgressContainer,
-  CustomLink,
-} from "../styles/component";
+import { Typography } from "@mui/material";
+import { Card, CardAvatar, CardImage, CustomLink } from "../styles/component";
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetDetailedInfo } from "../store/asyncActions";
-import { stylesCard } from "../styles";
+import { SkeletonPokemonCard } from "./SkeletonPokemonCard";
 
 export const PokemonCard = React.memo(({ item }) => {
   const dispatch = useDispatch();
@@ -63,21 +57,7 @@ export const PokemonCard = React.memo(({ item }) => {
       </Card>
     </CustomLink>
   ) : (
-    <Card sx={stylesCard}>
-      <Typography
-        component="h5"
-        variant="h5"
-        sx={(theme) => ({
-          borderBottom: `3px solid  ${theme.palette.secondary.main}`,
-        })}
-      >
-        {item.name.toUpperCase()}
-      </Typography>
-
-      <CircleProgressContainer>
-        <CircularProgress />
-      </CircleProgressContainer>
-    </Card>
+    <SkeletonPokemonCard />
   );
 });
 

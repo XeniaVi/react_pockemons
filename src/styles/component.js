@@ -43,7 +43,7 @@ export const customTheme = createTheme({
 
 export const Container = muiStyled(Box)(({ theme }) => ({
   width: "100%",
-  minHeight: "cacl(100vh - 1rem)",
+  minHeight: "calc(100vh - 1rem)",
   paddingBottom: "1rem",
   backgroundColor: theme.palette.primary.backgroundColor,
   boxSizing: "border-box",
@@ -107,8 +107,8 @@ export const FlexInnerCard = styled(MuiCard)`
 export const Typography = muiStyled(MuiTypography)(({ theme }) => ({
   color: theme.palette.primary.main,
 
-  [theme.breakpoints.down("md")]: { fontSize: "4rem !important" },
-  [theme.breakpoints.down("sm")]: { fontSize: "3.5rem !important" },
+  [theme.breakpoints.down("md")]: { fontSize: "3rem !important" },
+  [theme.breakpoints.down("sm")]: { fontSize: "2.5rem !important" },
 }));
 
 export const DetailedTypography = styled(MuiTypography)`
