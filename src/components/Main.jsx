@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  useQueryParams,
-  StringParam,
-  NumberParam,
   ArrayParam,
+  NumberParam,
+  StringParam,
+  useQueryParams,
   withDefault,
 } from "use-query-params";
+
+import { Pagination, Skeleton } from "@mui/material";
+
 import { limits } from "../constants";
+import { useDebounce } from "../hooks/useDebounce.jsx";
 import {
   actionGetAllPokemons,
   actionGetPokemons,
@@ -33,19 +37,18 @@ import {
   stylesInput,
   stylesSelectForm,
 } from "../styles";
-import { Pagination, Skeleton } from "@mui/material";
 import {
   FilterContainer,
   FlexContainer,
   Typography,
 } from "../styles/component";
-import { InputSearch } from "./InputSearch";
-import { PokemonList } from "./PokemonList";
-import { SelectForm } from "./SelectForm";
-import { useDebounce } from "../hooks/useDebounce";
+import { InputSearch } from "./InputSearch.jsx";
+import { PokemonList } from "./PokemonList.jsx";
+import { SelectForm } from "./SelectForm.jsx";
 
 const FiltersParam = withDefault(ArrayParam, []);
 
+//TODO: рефакторинг компонента
 export const Main = () => {
   const dispatch = useDispatch();
 
@@ -67,16 +70,16 @@ export const Main = () => {
     count,
     countOfPages,
     currentPage,
-  } = useSelector((state) => state.pokemons);
+  } = useSelector(state => state.pokemons);
 
   const { types, selectedTypes, itemsTypes, itemsAllTypes } = useSelector(
-    (state) => state.types
+    state => state.types,
   );
 
   const [searchValue, setSearchValue] = useState(search ? search : "");
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(
-    Boolean(offset || limit || filters || search)
+    Boolean(offset || limit || filters || search),
   );
 
   const debouncedSearchValue = useDebounce(searchValue, 1000);
@@ -86,7 +89,7 @@ export const Main = () => {
     setQuery({ offset: value * limitState - limitState });
   };
 
-  const handleChangeSelect = (event) => {
+  const handleChangeSelect = event => {
     dispatch(setLimit(event.target.value));
     setQuery({ limit: event.target.value });
     setQuery({ offset: 0 });
@@ -94,8 +97,8 @@ export const Main = () => {
 
   const getSearchItems = (value, offset) => {
     const newItems = selectedTypes.length
-      ? itemsAllTypes.filter((item) => item.name.includes(value))
-      : itemsAll.filter((item) => item.name.includes(value));
+      ? itemsAllTypes.filter(item => item.name.includes(value))
+      : itemsAll.filter(item => item.name.includes(value));
 
     const resetItems = selectedTypes.length ? itemsAllTypes : itemsAll;
 
@@ -106,23 +109,23 @@ export const Main = () => {
     !offset && setQuery({ offset: 0 });
   };
 
-  const handleChangeSearchFilter = (event) => {
+  const handleChangeSearchFilter = event => {
     setIsLoading(true);
     setSearchValue(event.target.value);
   };
 
-  const getDataFromSearchFilter = (value) => {
+  const getDataFromSearchFilter = value => {
     setQuery({ search: value });
     getSearchItems(value, 0);
   };
 
-  const handleChangeSelectFilter = (event) => {
+  const handleChangeSelectFilter = event => {
     setIsLoading(true);
     setDisabled(true);
     const type = event.target.value[event.target.value.length - 1];
 
     if (event.target.value.length > selectedTypes.length) {
-      const searchType = types.filter((item) => item.name === type)[0];
+      const searchType = types.filter(item => item.name === type)[0];
 
       dispatch(actionGetPokemonsAccordingTypes({ url: searchType.url, type }));
     } else if (!type) {
@@ -132,11 +135,12 @@ export const Main = () => {
       let removeType = "";
 
       for (let i = 0; i < itemsTypes.length; i++) {
-        if (!event.target.value.includes(itemsTypes[i].type))
+        if (!event.target.value.includes(itemsTypes[i].type)) {
           removeType = itemsTypes[i].type;
+        }
       }
 
-      const newItems = itemsTypes.filter((item) => item.type !== removeType);
+      const newItems = itemsTypes.filter(item => item.type !== removeType);
 
       dispatch(setItemsTypes(newItems));
       dispatch(setCurrentPage(1));
@@ -147,12 +151,12 @@ export const Main = () => {
     setQuery({ filters: event.target.value });
   };
 
-  const getStartFilterTypes = (filters) => {
+  const getStartFilterTypes = filters => {
     if (filters.length !== selectedTypes.length) {
       for (let i = 0; i < filters.length; i++) {
-        const item = types.filter((item) => filters[i] === item.name)[0];
+        const item = types.filter(item => filters[i] === item.name)[0];
         dispatch(
-          actionGetPokemonsAccordingTypes({ url: item.url, type: item.name })
+          actionGetPokemonsAccordingTypes({ url: item.url, type: item.name }),
         );
       }
       dispatch(setSelectedTypes(filters));
@@ -177,7 +181,7 @@ export const Main = () => {
   useEffect(() => {
     !itemsAll.length &&
       dispatch(
-        actionGetPokemons({ endpoint: "pokemon", limitState, offsetState })
+        actionGetPokemons({ endpoint: "pokemon", limitState, offsetState }),
       );
 
     dispatch(actionGetPokemonsType({ endpoint: "type" }));
@@ -188,7 +192,7 @@ export const Main = () => {
       setItemsDisplay({
         offsetState: offset ? offset : offsetState,
         limitState: limit ? limit : limitState,
-      })
+      }),
     );
   }, [limitState, offsetState, items]);
 
@@ -201,7 +205,9 @@ export const Main = () => {
         search &&
         !filters.length &&
         getSearchItems(search, offset);
+
       itemsAll.length >= count && filters && getStartFilterTypes(filters);
+
       next && itemsAll.length < count && dispatch(actionGetAllPokemons(next));
     }
   }, [next]);
@@ -276,6 +282,7 @@ export const Main = () => {
           )}
         </FlexContainer>
       </FilterContainer>
+
       <PokemonList
         items={itemsDisplay}
         isLoading={isLoading}

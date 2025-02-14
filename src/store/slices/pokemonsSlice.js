@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import {
+  actionGetAllPokemons,
   actionGetDetailedInfo,
   actionGetPokemons,
-  actionGetAllPokemons,
 } from "../asyncActions";
 
 const pokemonsSlice = createSlice({
@@ -21,71 +22,64 @@ const pokemonsSlice = createSlice({
   },
   reducers: {
     setLimit: (state, action) => {
-      return {
-        ...state,
-        currentPage: 1,
-        limitState: Number(action.payload),
-        offsetState: 0,
-      };
+      state.currentPage = 1;
+      state.limitState = Number(action.payload);
+      state.offsetState = 0;
     },
     setCurrentPage: (state, action) => {
-      return {
-        ...state,
-        currentPage: action.payload,
-        offsetState: state.limitState * (action.payload - 1),
-      };
+      state.currentPage = action.payload;
+      state.offsetState = state.limitState * (action.payload - 1);
     },
     setItems: (state, action) => {
-      const { data, offset } = action.payload;
+      const { data: items, offset: offsetState } = action.payload;
 
-      return {
-        ...state,
-        items: data,
-        offsetState: offset,
-        currentPage: offset / state.limitState + 1,
-        itemsDisplay: data.slice(offset, state.limitState + offset),
-        countOfPages: Math.ceil(data.length / state.limitState),
-      };
+      state.items = items;
+      state.offsetState = offsetState;
+      state.currentPage = offsetState / state.limitState + 1;
+      state.itemsDisplay = items.slice(
+        offsetState,
+        state.limitState + offsetState,
+      );
+      state.countOfPages = Math.ceil(items.length / state.limitState);
     },
     setItemsDisplay: (state, action) => {
       const { offsetState, limitState } = action.payload;
-      return {
-        ...state,
+      state.offsetState = offsetState;
+      state.limitState = limitState;
+      state.currentPage = offsetState / limitState + 1;
+      state.itemsDisplay = state.items.slice(
         offsetState,
-        limitState,
-        currentPage: offsetState / limitState + 1,
-        itemsDisplay: state.items.slice(offsetState, offsetState + limitState),
-        countOfPages: Math.ceil(state.items.length / limitState),
-      };
+        offsetState + limitState,
+      );
+      state.countOfPages = Math.ceil(state.items.length / limitState);
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder.addCase(actionGetPokemons.fulfilled, (state, action) => {
-      return {
-        ...state,
-        items: action.payload.results,
-        itemsDisplay: action.payload.results,
-        itemsAll: action.payload.results,
-        count: action.payload.count,
-        previous: action.payload.previous,
-        next: action.payload.next,
-        countOfPages: Math.ceil(action.payload.count / state.limitState),
-      };
+      const { results: items, count, next, previous } = action.payload;
+
+      state.items = items;
+      state.itemsDisplay = items;
+      state.itemsAll = items;
+      state.count = count;
+      state.previous = previous;
+      state.next = next;
+      state.countOfPages = Math.ceil(action.payload.count / state.limitState);
     });
     builder.addCase(actionGetAllPokemons.fulfilled, (state, action) => {
-      return {
-        ...state,
-        items: [...state.itemsAll, ...action.payload.results],
-        itemsAll: [...state.itemsAll, ...action.payload.results],
-        next: action.payload.next,
-      };
+      const { results, next } = action.payload;
+
+      const updatedItems = [...state.itemsAll, ...results];
+
+      state.items = updatedItems;
+      state.itemsAll = updatedItems;
+      state.next = next;
     });
-    builder.addCase(actionGetDetailedInfo.fulfilled, (state, action) => {
-      return {
-        ...state,
-        itemsFull: [...state.itemsFull, action.payload],
-      };
-    });
+    builder.addCase(
+      actionGetDetailedInfo.fulfilled,
+      (state, action) =>
+        (state.itemsFull = [...state.itemsFull, action.payload]),
+    );
   },
 });
 

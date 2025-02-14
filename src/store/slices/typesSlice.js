@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import {
   actionGetPokemonsAccordingTypes,
   actionGetPokemonsType,
@@ -13,51 +14,27 @@ const typesSlice = createSlice({
     itemsAllTypes: [],
   },
   reducers: {
-    setSelectedTypes: (state, action) => {
-      return {
-        ...state,
-        selectedTypes: action.payload,
-      };
-    },
-    setItemsTypes: (state, action) => {
-      return {
-        ...state,
-        itemsTypes: action.payload,
-      };
-    },
-    setItemsAllTypes: (state, action) => {
-      return {
-        ...state,
-        itemsAllTypes: action.payload,
-      };
-    },
-    reset: (state) => {
-      return {
-        ...state,
-        itemsAllTypes: [],
-        itemsTypes: [],
-      };
+    setSelectedTypes: (state, action) => (state.selectedTypes = action.payload),
+    setItemsTypes: (state, action) => (state.itemsTypes = action.payload),
+    setItemsAllTypes: (state, action) => (state.itemsAllTypes = action.payload),
+    reset: state => {
+      state.itemsAllTypes = [];
+      state.itemsTypes = [];
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(actionGetPokemonsType.fulfilled, (state, action) => {
-      return {
-        ...state,
-        types: action.payload.results,
-      };
-    });
+  extraReducers: builder => {
+    builder.addCase(
+      actionGetPokemonsType.fulfilled,
+      (state, action) => (state.types = action.payload),
+    );
     builder.addCase(
       actionGetPokemonsAccordingTypes.fulfilled,
       (state, action) => {
         const { data, type } = action.payload;
-        const newItems = data.pokemon.map((item) => item.pokemon);
-
-        return {
-          ...state,
-          itemsTypes: [...state.itemsTypes, { type, items: newItems }],
-          itemsAllTypes: [...state.itemsAllTypes, ...newItems],
-        };
-      }
+        const newItems = data.pokemon.map(item => item.pokemon);
+        state.itemsAllTypes = [...state.itemsAllTypes, ...newItems];
+        state.itemsTypes = [...state.itemsTypes, { type, items: newItems }];
+      },
     );
   },
 });

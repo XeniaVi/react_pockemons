@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
 import {
   getAllPokemons,
   getDetailedInfo,
@@ -8,55 +9,55 @@ import {
 
 export const actionGetPokemons = createAsyncThunk(
   "pokemonsSlice/actionGetPokemons",
-  async (obj) => {
+  async obj => {
     try {
       const response = await getPokemons(obj);
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const actionGetAllPokemons = createAsyncThunk(
   "pokemonsSlice/actionGetAllPokemons",
-  async (url) => {
+  async url => {
     try {
       const response = await getAllPokemons(url);
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const actionGetDetailedInfo = createAsyncThunk(
   "pokemonsSlice/actionGetDetailedInfo",
-  async (url) => {
+  async url => {
     try {
       const response = await getDetailedInfo(url);
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const actionGetPokemonsType = createAsyncThunk(
   "typesSlice/actionGetPokemonsType",
-  async (obj) => {
+  async obj => {
     try {
       const response = await getPokemons(obj);
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const actionGetPokemonsAccordingTypes = createAsyncThunk(
   "typesSlice/actionGetPokemonsAccordingTypes",
-  async (obj) => {
+  async obj => {
     try {
       const { url, type } = obj;
       const response = await getPokemonsAccordingTypes(url);
@@ -64,5 +65,5 @@ export const actionGetPokemonsAccordingTypes = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );

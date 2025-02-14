@@ -1,5 +1,6 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+
 import { TextField } from "@mui/material";
 
 export const InputSearch = ({
@@ -18,6 +19,7 @@ export const InputSearch = ({
     sx={styles}
   />
 );
+
 InputSearch.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,

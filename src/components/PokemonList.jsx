@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { List } from "../styles/component";
-import { PokemonCard } from "./PokemonCard";
+import React, { useEffect, useState } from "react";
+
 import { createList } from "../helpers";
-import { SkeletonPokemonCard } from "./SkeletonPokemonCard";
+import { List } from "../styles/component";
+import { PokemonCard } from "./PokemonCard.jsx";
+import { SkeletonPokemonCard } from "./SkeletonPokemonCard.jsx";
 
 export const PokemonList = React.memo(({ items, isLoading, limit }) => {
   const [skeletonList, setSkeletonList] = useState([]);
@@ -14,8 +15,8 @@ export const PokemonList = React.memo(({ items, isLoading, limit }) => {
   return (
     <List>
       {isLoading
-        ? skeletonList.map((item) => <SkeletonPokemonCard key={item.id} />)
-        : items.map((item) => <PokemonCard key={item.name} item={item} />)}
+        ? skeletonList.map(item => <SkeletonPokemonCard key={item.id} />)
+        : items.map(item => <PokemonCard key={item.name} item={item} />)}
     </List>
   );
 });

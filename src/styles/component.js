@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 import {
   Avatar,
   Box,
-  Card as MuiCard,
   createTheme,
+  Card as MuiCard,
   Typography as MuiTypography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import { styled as muiStyled } from "@mui/system";
 
 export const customTheme = createTheme({
@@ -54,8 +55,8 @@ export const FlexContainer = styled(Box)`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: ${(props) => props.justifyContent || "center"};
-  align-items: ${(props) => props.alignItems || "center"};
+  justify-content: ${props => props.justifyContent || "center"};
+  align-items: ${props => props.alignItems || "center"};
 `;
 
 export const FilterContainer = styled(FlexContainer)`
@@ -179,7 +180,7 @@ export const Card = styled(MuiCard)`
   padding: 1rem;
   height: calc(100% - 2rem);
   cursor: pointer;
-  background-color: ${(props) => props.bgcolor} !important;
+  background-color: ${props => props.bgcolor} !important;
   overflow: visible !important;
 `;
 
@@ -211,7 +212,7 @@ export const ImageContainer = muiStyled(Box)(({ theme }) => ({
   padding: "1rem",
   borderRadius: "50%",
   border: `2px solid ${theme.palette.secondary.main}`,
-  backgroundColor: `${(props) => props.bgcolor || "transparent"}`,
+  backgroundColor: `${props => props.bgcolor || "transparent"}`,
 }));
 
 export const SmallImage = styled.img`
@@ -244,8 +245,8 @@ export const StatsItemText = muiStyled("span")(({ theme }) => ({
 }));
 
 export const StatsItemNumber = styled.div`
-  font-size: ${(props) => props.fs || "1.2rem"};
-  color: ${(props) => props.color};
+  font-size: ${props => props.fs || "1.2rem"};
+  color: ${props => props.color};
   font-weight: 700;
 `;
 
@@ -258,5 +259,5 @@ export const TypePokemon = muiStyled(Box)(({ theme }) => ({
   color: theme.palette.primary.main,
   textTransform: "uppercase",
   fontWeight: 700,
-  backgroundColor: `${(props) => props.bgcolor}`,
+  backgroundColor: `${props => props.bgcolor}`,
 }));
