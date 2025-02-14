@@ -1,5 +1,6 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
+
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export const SelectForm = ({
@@ -15,8 +16,9 @@ export const SelectForm = ({
   styles,
 }) => {
   return (
-    <FormControl sx={(theme) => (styles ? styles(width, theme) : {})}>
+    <FormControl sx={theme => (styles ? styles(width, theme) : {})}>
       <InputLabel>{label}</InputLabel>
+
       <Select
         value={value}
         label={label}
@@ -25,11 +27,11 @@ export const SelectForm = ({
         multiple={multiple}
         MenuProps={MenuProps}
       >
-        {list.map((item) => (
+        {list.map(item => (
           <MenuItem
             key={item.name}
             value={item.name}
-            sx={(theme) =>
+            sx={theme =>
               MenuItemProps ? MenuItemProps(theme.palette.types[item.name]) : {}
             }
           >

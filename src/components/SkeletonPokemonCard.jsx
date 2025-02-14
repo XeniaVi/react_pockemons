@@ -1,5 +1,7 @@
 import React from "react";
+
 import { Skeleton, Typography } from "@mui/material";
+
 import { stylesCard } from "../styles";
 import { Card, CardAvatar } from "../styles/component";
 

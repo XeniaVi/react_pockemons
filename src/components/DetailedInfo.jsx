@@ -1,43 +1,47 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { Avatar, Button, Skeleton } from "@mui/material";
+
+import { config } from "../config";
+import { getStatsColor } from "../helpers";
+import { actionGetDetailedInfo } from "../store/asyncActions";
+import { sizeDefaultAvatar, stylesBtn } from "../styles";
 import {
   DetailedContainer,
-  TypePokemon,
+  DetailedTypography,
   FlexContainer,
   FlexInnerCard,
   FlexInnerDetailedInfo,
+  ImageContainer,
+  MainDetailedTypography,
   SmallImage,
   StatsItem,
   StatsItemNumber,
   StatsItemText,
   StatsList,
-  ImageContainer,
-  DetailedTypography,
-  MainDetailedTypography,
+  TypePokemon,
 } from "../styles/component";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { config } from "../config";
-import { actionGetDetailedInfo } from "../store/asyncActions";
-import { getStatsColor } from "../helpers";
-import { sizeDefaultAvatar, stylesBtn } from "../styles";
 
+//TODO: деокомпозировать компонент
 export const DetailedInfo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const items = useSelector((state) => state.pokemons.itemsFull);
+  const items = useSelector(state => state.pokemons.itemsFull);
 
   const [item, setItem] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
-    const arr = items.filter((item) => Number(id) === item.id);
+    const arr = items.filter(item => Number(id) === item.id);
     !arr.length &&
       dispatch(actionGetDetailedInfo(`${config.APP_URL}pokemon/${id}`));
   }, []);
 
   useEffect(() => {
-    !item && setItem(items.filter((item) => item.id === Number(id))[0]);
+    !item && setItem(items.filter(item => item.id === Number(id))[0]);
+    //TODO: не хватает зависимостей
   }, [items]);
 
   return (
@@ -54,6 +58,7 @@ export const DetailedInfo = () => {
         <FlexInnerDetailedInfo>
           <MainDetailedTypography
             component="h2"
+            //TODO: to styles
             sx={{ minWidth: "200px", height: "36px" }}
           >
             {item ? (
@@ -65,10 +70,10 @@ export const DetailedInfo = () => {
 
           <FlexInnerDetailedInfo>
             {item ? (
-              item.types.map((item) => (
+              item.types.map(item => (
                 <TypePokemon
                   key={item.type.name}
-                  sx={(theme) => ({
+                  sx={theme => ({
                     background: theme.palette.types[item.type.name],
                   })}
                 >
@@ -83,10 +88,10 @@ export const DetailedInfo = () => {
 
         <FlexInnerDetailedInfo>
           <FlexContainer>
+            {/* TODO: вынести весь текст в костанты */}
             <DetailedTypography component="h4" sx={{ color: "primary.main" }}>
               Height:
             </DetailedTypography>
-
             <StatsItemNumber fs="2rem" sx={{ color: "secondary.main" }}>
               {item ? (
                 item.height
@@ -117,7 +122,7 @@ export const DetailedInfo = () => {
 
             <StatsList>
               {item ? (
-                item.abilities.map((item) => (
+                item.abilities.map(item => (
                   <StatsItem key={item.ability.name}>
                     <StatsItemText>{item.ability.name}</StatsItemText>
                   </StatsItem>
@@ -133,8 +138,9 @@ export const DetailedInfo = () => {
         </FlexInnerDetailedInfo>
 
         {item ? (
+          //TODO: что вообще происходит в стилях????
           <ImageContainer
-            sx={(theme) => ({
+            sx={theme => ({
               background: item
                 ? item.types.length === 1
                   ? theme.palette.types[item.types[0].type.name]
@@ -166,15 +172,17 @@ export const DetailedInfo = () => {
 
         <StatsList>
           {item ? (
-            item.stats.map((item) => (
+            item.stats.map(item => (
               <StatsItem key={item.stat.name}>
                 <StatsItemText>{item.stat.name}: </StatsItemText>
+
                 <StatsItemNumber color={getStatsColor(item.base_stat)}>
                   {item.base_stat}
                 </StatsItemNumber>
               </StatsItem>
             ))
           ) : (
+            //TODO: вынести в компонент
             <>
               <FlexContainer>
                 <Skeleton variant="rounded" width="200px" height="40px" />{" "}

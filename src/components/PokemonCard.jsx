@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Typography } from "@mui/material";
-import { Card, CardAvatar, CardImage, CustomLink } from "../styles/component";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import { Typography } from "@mui/material";
+
 import { actionGetDetailedInfo } from "../store/asyncActions";
-import { SkeletonPokemonCard } from "./SkeletonPokemonCard";
+import { Card, CardAvatar, CardImage, CustomLink } from "../styles/component";
+import { SkeletonPokemonCard } from "./SkeletonPokemonCard.jsx";
 
 export const PokemonCard = React.memo(({ item }) => {
   const dispatch = useDispatch();
 
-  const items = useSelector((state) => state.pokemons.itemsFull);
+  const items = useSelector(state => state.pokemons.itemsFull);
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
-    const arr = items.filter((i) => i.name === item.name);
+    const arr = items.filter(i => i.name === item.name);
     !arr.length && dispatch(actionGetDetailedInfo(item.url));
   }, []);
 
   useEffect(() => {
-    !currentItem &&
-      setCurrentItem(items.filter((i) => i.name === item.name)[0]);
+    !currentItem && setCurrentItem(items.filter(i => i.name === item.name)[0]);
   }, [items]);
 
   return currentItem ? (
     <CustomLink to={`/pokemon/${currentItem.id}`}>
       <Card
-        sx={(theme) => ({
+        sx={theme => ({
           background:
             currentItem.types.length === 1
               ? theme.palette.types[currentItem.types[0].type.name]
@@ -39,7 +40,7 @@ export const PokemonCard = React.memo(({ item }) => {
         <Typography
           component="h5"
           variant="h5"
-          sx={(theme) => ({
+          sx={theme => ({
             borderBottom: `3px solid  ${theme.palette.secondary.main}`,
           })}
         >
